@@ -1,0 +1,8 @@
+[submodule "Kha"]
+	path = Kha
+	url = ../Kha
+	branch = master
+[submodule "Libraries/Khajak"]
+	path = Libraries/Khajak
+	url = ../Khajak
+	branch = master
