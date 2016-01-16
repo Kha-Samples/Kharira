@@ -12,6 +12,8 @@ import khajak.RenderObject;
 
 class KhajakTest {
 	var boxMesh: Mesh;
+	var box: RenderObject;
+	var initialized: Bool;
 	
 	public function new() {
 		System.notifyOnRender(render);
@@ -23,20 +25,26 @@ class KhajakTest {
 	}
 	
 	function loadFinished() {
-		Renderer.the.light1.position = new FastVector3(1, 1, 1);
+		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
 		Renderer.the.light1.color = Color.White;
 		
 		boxMesh = new Mesh(Assets.blobs.cube_obj.toString());
-		var box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
+		box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
 		Renderer.the.objects.push(box);
+		
+		initialized = true;
 	}
 
 	function update(): Void {
+		if (!initialized) return;
 		
+		Renderer.the.updateCamera(new FastVector3(0, 0, 10), new FastVector3(0, 0, 0));
 	}
 
 	function render(framebuffer: Framebuffer): Void {
+		if (!initialized) return;
+		
 		Renderer.the.render(framebuffer);
 	}
 }
