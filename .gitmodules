@@ -6,3 +6,7 @@
 	path = Libraries/Khajak
 	url = ../Khajak
 	branch = master
+[submodule "Libraries/haxebullet"]
+	path = Libraries/haxebullet
+	url = ../haxebullet
+	branch = master
