@@ -10,6 +10,7 @@ import kha.Scheduler;
 import kha.System;
 import khajak.Mesh;
 import khajak.particles.Emitter;
+import khajak.Physics;
 import khajak.Renderer;
 import khajak.RenderObject;
 
@@ -31,6 +32,8 @@ class KhajakTest {
 	}
 	
 	function loadFinished() {
+		Physics.init();
+		
 		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
 		Renderer.the.light1.color = Color.White;
@@ -56,6 +59,8 @@ class KhajakTest {
 		
 		var deltaTime = Scheduler.time() - lastTime;
 		lastTime = Scheduler.time();
+		
+		Physics.update(deltaTime);
 		
 		for (emitter in Renderer.the.particleEmitters) {
 			emitter.update(deltaTime);
