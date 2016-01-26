@@ -42,7 +42,7 @@ class KhajakTest {
 		box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
 		Renderer.the.objects.push(box);
 		
-		var emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.White, Color.White, 0.005, 0.005, 500, Assets.images.smoke);
+		var emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
 		emitter.start(Math.POSITIVE_INFINITY);
 		Renderer.the.particleEmitters.push(emitter);
 		
