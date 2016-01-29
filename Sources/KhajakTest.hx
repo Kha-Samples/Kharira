@@ -19,6 +19,7 @@ class KhajakTest {
 	var boxMesh: Mesh;
 	var billboardMesh: Mesh;
 	var box: RenderObject;
+	var emitter: Emitter;
 	var trackGenerator: TrackGenerator;
 	var initialized: Bool;
 	
@@ -33,6 +34,7 @@ class KhajakTest {
 	
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
+		InputManager.init(new InputManager());
 		
 		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
@@ -42,12 +44,7 @@ class KhajakTest {
 		box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
 		Renderer.the.objects.push(box);
 		
-		var emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
-		emitter.start(Math.POSITIVE_INFINITY);
-		Renderer.the.particleEmitters.push(emitter);
-		
-		emitter = new Emitter(new FastVector3(1, 0, -2), 0, 0, new FastVector3(-1, 0, 0), 0, 0.5 * 9.81, 1, 1, new FastVector2(0.1, 0.1), new FastVector2(0.2, 0.2), 0, 2 * Math.PI, 0, 2 * Math.PI, 0.5, 1, 0.5, 1, Color.White, Color.White, Color.White, Color.White, 0.3, 0.5, 10, Assets.images.cube);
-		emitter.start(10);
+		emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
 		Renderer.the.particleEmitters.push(emitter);
 		
 		trackGenerator= new TrackGenerator(42);
