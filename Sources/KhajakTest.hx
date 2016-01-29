@@ -19,6 +19,7 @@ class KhajakTest {
 	var boxMesh: Mesh;
 	var billboardMesh: Mesh;
 	var box: RenderObject;
+	var trackGenerator: TrackGenerator;
 	var initialized: Bool;
 	
 	public function new() {
@@ -49,10 +50,7 @@ class KhajakTest {
 		emitter.start(10);
 		Renderer.the.particleEmitters.push(emitter);
 		
-		var tg = new TrackGenerator(42);
-		for (i in 0...420) {
-			trace(tg.getY(i * 0.35));
-		}
+		trackGenerator= new TrackGenerator(42);
 		
 		lastTime = Scheduler.time();
 		initialized = true;
@@ -74,5 +72,19 @@ class KhajakTest {
 		if (!initialized) return;
 		
 		Renderer.the.render(framebuffer);
+		
+		var g2 = framebuffer.g2;
+		
+		g2.begin(false);
+		
+		var nextY = 0.0;
+		var lastY = trackGenerator.getY(0) * 10 + System.pixelHeight / 2;
+		for (i in 1...System.pixelWidth) {
+			nextY = trackGenerator.getY(i / 10) * 10 + System.pixelHeight / 2;
+			g2.drawLine((i - 1), lastY, i, nextY);
+			lastY = nextY;
+		}
+		
+		g2.end();
 	}
 }

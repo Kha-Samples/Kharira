@@ -26,11 +26,11 @@ class TrackGenerator {
 			l += sectionLengths[s];
 		}
 		
-		return getYInSection(x, s);
+		return getYInSection(x - l, s);
 	}
 	
 	private function getYInSection(x: Float, s: Int): Float {
-		return Math.sin(sectionLengths[s] * x / (2 * Math.PI)) * sectionCurves[s];
+		return Math.sin(x * (2 * Math.PI) / sectionLengths[s]) * sectionCurves[s];
 	}
 	
 	private inline function getRandomValue(min: Float, max: Float): Float {
