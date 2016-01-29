@@ -33,6 +33,7 @@ class KhajakTest {
 	
 	function loadFinished() {
 		Physics.init();
+		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		
 		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
@@ -49,6 +50,11 @@ class KhajakTest {
 		emitter = new Emitter(new FastVector3(1, 0, -2), 0, 0, new FastVector3(-1, 0, 0), 0, 0.5 * 9.81, 1, 1, new FastVector2(0.1, 0.1), new FastVector2(0.2, 0.2), 0, 2 * Math.PI, 0, 2 * Math.PI, 0.5, 1, 0.5, 1, Color.White, Color.White, Color.White, Color.White, 0.3, 0.5, 10, Assets.images.cube);
 		emitter.start(10);
 		Renderer.the.particleEmitters.push(emitter);
+		
+		var tg = new TrackGenerator(42);
+		for (i in 0...420) {
+			trace(tg.getY(i * 0.35));
+		}
 		
 		lastTime = Scheduler.time();
 		initialized = true;
