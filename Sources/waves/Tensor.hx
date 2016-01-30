@@ -12,7 +12,7 @@ class Tensor {
 	public static var valid: Int;       // after critical operations, this is 1 when ok, or 0 in case of failure
 	public static var precision: Type;  // after critical operations, this is 1 when ok, or 0 in case of failure
 
-	public function new(ndims: Int, size: Vector<Int>) {
+	public function new(ndims: Int, size: Vector<Int> = null) {
 		this.ndims = ndims;
 		this.size = new Vector<Int>(ndims);
 		if (size != null)
@@ -41,6 +41,30 @@ class Tensor {
 		//assert(c1+ret.numel<=numel);
 		for (c0 in 0...ret.numel)
 			ret.data[c0]=data[c1++];
-		return ret;      
+		return ret;
+	}
+	
+	
+	public static function eye(size0: Int): Tensor {
+		var vec = new Vector<Int>(2);
+		vec.set(0, size0);
+		vec.set(1, size0);
+		var ret = new Tensor(2, vec);
+		var c0 = 0;
+		while (c0 < ret.numel) {
+			ret.data[c0]=1;
+			c0 += size0 + 1;
+		}
+		return ret;
+	}
+	
+	public function forValues(ind0: Int, ind: Array<Int>): Float {
+		var acc = 1;
+		for (c0 in 0...ndims - 1) {
+			acc *= size[c0];
+			ind0 += ind[c0] * acc;
+		}
+		//assert(0<=ind0&&ind0<numel);
+		return data[ind0];
 	}
 }

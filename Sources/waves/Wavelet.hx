@@ -21,6 +21,6 @@ class Wavelet {
 	//linked<aniWavePart*>  prt;
 	//linked<aniWaveRefl>   tre;  // this should be a sorted thing: like treeset !!!
 	//linked<aniWaveEdge*>  edg;
-	var wav: Wave;
-	var spd: Float;
+	public var wav: Wave;
+	public var spd: Float;
 }
