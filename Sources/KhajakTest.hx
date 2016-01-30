@@ -91,12 +91,13 @@ class KhajakTest {
 		var distances = new Array<Float>();
 		for (player in 0...2) {
 			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 10, boats[player].position.z - 10), FastVector3.fromVector3(boats[player].position));
+			Renderer.the.beginRender(framebuffer, player);
+			water.render(framebuffer, Renderer.the.calculateMV());
 			Renderer.the.render(framebuffer, player);
+			Renderer.the.endRender(framebuffer, player);
 		
 			distances[player] = boats[player].position.z - boats[1 - player].position.z;
 		}
-		
-		//TODO: water.render(framebuffer);
 		
 		var g2 = framebuffer.g2;
 		

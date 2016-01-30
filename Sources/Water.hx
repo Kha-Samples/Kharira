@@ -5,17 +5,20 @@ import kha.graphics4.IndexBuffer;
 import kha.graphics4.PipelineState;
 import kha.graphics4.TextureFormat;
 import kha.graphics4.TextureUnit;
+import kha.graphics4.ConstantLocation;
 import kha.graphics4.Usage;
 import kha.graphics4.VertexBuffer;
 import kha.graphics4.VertexData;
 import kha.graphics4.VertexStructure;
 import kha.Image;
+import kha.math.FastMatrix4;
 import kha.math.Random;
 import kha.Shaders;
 
 class Water {
 	var vertexMap: Image;
 	var vertexMapLocation: TextureUnit;
+	var matrixLocation: ConstantLocation;
 	var pipeline: PipelineState;
 	var vertexBuffer: VertexBuffer;
 	var indexBuffer: IndexBuffer;
@@ -37,6 +40,7 @@ class Water {
 		pipeline.compile();
 		
 		vertexMapLocation = pipeline.getTextureUnit("tex");
+		matrixLocation = pipeline.getConstantLocation("matrix");
 
 		vertexBuffer = new VertexBuffer(50 * 50, structure, Usage.DynamicUsage);
 		var vertices = vertexBuffer.lock();
@@ -44,8 +48,8 @@ class Water {
 		var xpos = -1.0;
 		for (y in 0...50) {
 			for (x in 0...50) {
-				vertices.set(y * 50 * 2 + x * 2 + 0, (x - 25) / 25.0);
-				vertices.set(y * 50 * 2 + x * 2 + 0, (y - 25) / 25.0);
+				vertices.set(y * 50 * 2 + x * 2 + 0, (x - 25) / 25.0 * 50.0);
+				vertices.set(y * 50 * 2 + x * 2 + 1, (y - 25) / 25.0 * 50.0);
 			}
 		}
 		vertexBuffer.unlock();
@@ -63,9 +67,10 @@ class Water {
 		indexBuffer.unlock();
 	}
 	
-	public function render(framebuffer: Framebuffer): Void {
+	public function render(framebuffer: Framebuffer, matrix: FastMatrix4): Void {
 		var g = framebuffer.g4;
 		g.setPipeline(pipeline);
+		g.setMatrix(matrixLocation, matrix);
 		g.setTexture(vertexMapLocation, vertexMap);
 		g.setIndexBuffer(indexBuffer);
 		g.setVertexBuffer(vertexBuffer);
