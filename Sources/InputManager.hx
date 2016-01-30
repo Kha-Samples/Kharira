@@ -17,6 +17,7 @@ class InputManager {
 	private var strenght: Array<Float>;
 	private var inverted: Array<Bool>;
 	private var invertedDown: Array<Bool>;
+	private var startDown: Array<Bool>;
 	
 	private var time: Array<Float>;
 	
@@ -26,6 +27,7 @@ class InputManager {
 		strenghtLeft = [false, false];
 		inverted = [false, false];
 		invertedDown = [false, false];
+		startDown = [false, false];
 		strenght = [0.0, 0.0];
 		time = [0.0, 0.0];
 		
@@ -36,6 +38,10 @@ class InputManager {
 	
 	public static function init(inputManager: InputManager) {
 		the = inputManager;
+	}
+	
+	public function getStart(ID: Int): Bool {
+		return startDown[ID];
 	}
 	
 	public function getStrength(ID: Int, left: Bool): Float {
@@ -67,7 +73,10 @@ class InputManager {
 	}
 	
 	function onGamepadButton(padID: Int, button: Int, value: Float) {
-		if (button == 3) {
+		if (button == 0) {
+			startDown[padID] = value > 0.75;
+		}
+		else if (button == 3) {
 			var down = value > 0.75;
 			if (invertedDown[padID] && !down) {
 				invertedDown[padID] = false;

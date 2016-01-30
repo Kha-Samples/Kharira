@@ -20,6 +20,11 @@ class KhajakTest {
 	
 	var boats: Array<Boat>;
 	var water: Water;
+	
+	var gameRunning: Bool;
+	var playerReady: Array<Bool>;
+	var message: String;
+	
 	var initialized: Bool;
 	
 	public function new() {
@@ -60,6 +65,10 @@ class KhajakTest {
 			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 1.5), 0, x)));
 		}
 		
+		gameRunning = false;
+		playerReady = [false, false];
+		message = "";
+		
 		lastTime = Scheduler.time();
 		initialized = true;
 	}
@@ -70,19 +79,34 @@ class KhajakTest {
 		var deltaTime = Scheduler.time() - lastTime;
 		lastTime = Scheduler.time();
 		
-		var left: Float;
-		var right: Float;
-		for (player in 0...2) {
-			left = InputManager.the.getStrength(player, false);
-			right = InputManager.the.getStrength(player, true);
-			
-			if (left > 0) {
-				boats[player].addImpulse(left, true);
-				trace("[player " + player + "] left = " + left);
+		if (gameRunning) {
+			var left: Float;
+			var right: Float;
+			for (player in 0...2) {
+				left = InputManager.the.getStrength(player, false);
+				right = InputManager.the.getStrength(player, true);
+				
+				if (left > 0) {
+					boats[player].addImpulse(left, true);
+					trace("[player " + player + "] left = " + left);
+				}
+				if (right > 0) {
+					boats[player].addImpulse(right, false);
+					trace("[player " + player + "] right = " + right);
+				}
 			}
-			if (right > 0) {
-				boats[player].addImpulse(right, false);
-				trace("[player " + player + "] right = " + right);
+		}
+		else {
+			var ready = true;
+			for (player in 0...2) {
+				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
+				ready = ready && playerReady[player];
+			}
+			gameRunning = ready;
+			if (gameRunning) {
+				Scheduler.addTimeTask(displayText.bind("Lower your paddle with a shoulder button").bind(3), 1);
+				Scheduler.addTimeTask(displayText.bind("Pull back using a trigger").bind(3), 5);
+				Scheduler.addTimeTask(displayText.bind("Experiment with the delay").bind(3), 9);
 			}
 		}
 		
@@ -137,6 +161,26 @@ class KhajakTest {
 		
 		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
 		
+		if (!gameRunning) {
+			for (player in 0...2) {
+				if (!playerReady[player]) {
+					s = "Press A to ready up";
+					g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
+				}
+			}
+		}
+		else if (message != "") {
+			s = message;
+			for (player in 0...2) {
+				g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
+			}
+		}
+		
 		g2.end();
+	}
+	
+	private function displayText(text: String, seconds: Float) {
+		message = text;
+		Scheduler.addTimeTask(function(){message = "";}, seconds);
 	}
 }
