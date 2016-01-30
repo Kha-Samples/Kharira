@@ -51,6 +51,15 @@ class KhajakTest {
 			Renderer.the.objects.push(boat);
 		}
 		
+		var x: Float;
+		var y: Float;
+		for (i in 0...100) {
+			x = i;
+			y = TrackGenerator.the.getY(x);
+			Renderer.the.objects.push(new Stone(new Vector4(y - 7, 0, x * 5)));
+			Renderer.the.objects.push(new Stone(new Vector4(y + 7, 0, x * 5)));
+		}
+		
 		lastTime = Scheduler.time();
 		initialized = true;
 	}
@@ -91,7 +100,7 @@ class KhajakTest {
 		
 		var distances = new Array<Float>();
 		for (player in 0...2) {
-			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 10, boats[player].position.z - 10), new FastVector3(boats[player].position.x, boats[player].position.y, boats[player].position.z));
+			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 20, boats[player].position.z - 20), new FastVector3(boats[player].position.x, boats[player].position.y, boats[player].position.z));
 			Renderer.the.beginRender(framebuffer, player);
 			water.render(framebuffer, Renderer.the.calculateMV());
 			Renderer.the.render(framebuffer, player);
@@ -104,6 +113,7 @@ class KhajakTest {
 		
 		g2.begin(false);
 		
+		g2.color = Color.White;
 		var nextY = 0.0;
 		var lastY = TrackGenerator.the.getY(0) + System.pixelHeight / 2;
 		for (i in 1...System.pixelWidth) {
@@ -124,6 +134,8 @@ class KhajakTest {
 		g2.drawString(Math.round(distances[0]) + " m", padding, padding);
 		var s = Math.round(distances[1]) + " m";
 		g2.drawString(s, System.pixelWidth - padding - font.width(fontSize, s), padding);
+		
+		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
 		
 		g2.end();
 	}

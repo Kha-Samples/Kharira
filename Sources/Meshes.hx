@@ -12,7 +12,7 @@ class Meshes extends khajak.Meshes {
 		}
 		
 		return cube;
-	}	
+	}
 	
 	static var boat: Mesh;
 	public static var Boat(get, null): Mesh;
@@ -22,5 +22,15 @@ class Meshes extends khajak.Meshes {
 		}
 		
 		return boat;
+	}
+	
+	static var stone: Mesh;
+	public static var Stone(get, null): Mesh;
+	static function get_Stone() {
+		if (stone == null) {
+			stone = Mesh.FromModel(kha.Assets.blobs.stone_obj.toString());
+		}
+		
+		return stone;
 	}
 }

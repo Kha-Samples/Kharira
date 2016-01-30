@@ -22,7 +22,7 @@ class Boat extends RenderObject {
 	private var rotationStrength: Float;
 	
 	public function new(position: Vector4) {
-		super(Meshes.Boat, kha.Color.Black, kha.Assets.images.cube);
+		super(Meshes.Boat, kha.Color.fromBytes(102, 51, 0), kha.Assets.images.black);
 		
 		this.position = position;
 		angle = 0;
