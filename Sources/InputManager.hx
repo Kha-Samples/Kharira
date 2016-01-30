@@ -21,6 +21,8 @@ class InputManager {
 	
 	private var time: Array<Float>;
 	
+	public var forceStart: Bool;
+	
 	public function new() {
 		leftSide = [false, false];
 		rightSide = [false, false];
@@ -30,6 +32,7 @@ class InputManager {
 		startDown = [false, false];
 		strenght = [0.0, 0.0];
 		time = [0.0, 0.0];
+		forceStart = false;
 		
 		for (i in 0...2) {
 			registerGamepadListenener(i);
@@ -63,9 +66,11 @@ class InputManager {
 	}
 	
     function onKeyDown(inputKey : Key, inputChar : String) {
+		if (inputChar == " ") forceStart = true;
     }
 
     function onKeyUp(inputKey : Key, inputChar : String) {
+		if (inputChar == " ") forceStart = false;
     }
 	
 	function onGamepadAxis(padID: Int, axis: Int, value: Float) {

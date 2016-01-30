@@ -55,7 +55,7 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(2, 0.1, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 0.1, 0), kha.Color.fromBytes(139, 90, 43))];
+		boats = [new Boat(new Vector4(2, 1.2, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 1.2, 0), kha.Color.fromBytes(139, 90, 43))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}
@@ -66,8 +66,8 @@ class KhajakTest {
 		for (i in 0...iMax) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
-			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 0, x)));
-			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 0, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 1, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 1, x)));
 		}
 		
 		reset();
@@ -116,7 +116,7 @@ class KhajakTest {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
 				ready = ready && playerReady[player];
 			}
-			gameRunning = ready;
+			gameRunning = ready || InputManager.the.forceStart;
 			if (gameRunning) {
 				Scheduler.addTimeTask(displayText.bind("Lower your paddle with a shoulder button").bind(3), 1);
 				Scheduler.addTimeTask(displayText.bind("Pull back using a trigger").bind(3), 5);
@@ -131,7 +131,7 @@ class KhajakTest {
 		for (player in 0...2) {
 			if (!gameStopped && !playerWon[1 - player] && boats[player].position.z >= (TRACK_LENGHT - 5)) {
 				playerWon[player] = true;
-				displayText("Player " + (player + 1) + " won!", 10);
+				displayText("Player " + ((1 - player) + 1) + " will be sacrificed at the ritual!", 10);
 				Scheduler.addTimeTask(reset, 11);
 				gameStopped = true;
 			}
