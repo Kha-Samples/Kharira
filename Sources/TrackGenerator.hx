@@ -2,6 +2,8 @@ package;
 
 class TrackGenerator {
 	
+	public var width(default, null): Float;
+	
 	private var sections: Int;
 	private var minCurve: Float;
 	private var maxCurve: Float;
@@ -12,12 +14,13 @@ class TrackGenerator {
 	
 	public static var the(default, null): TrackGenerator;
 	
-	public function new(sections: Int, minCurve: Float, maxCurve: Float, minLenght: Float, maxLenght: Float) {
+	public function new(sections: Int, minCurve: Float, maxCurve: Float, minLenght: Float, maxLenght: Float, width: Float) {
 		this.sections = sections;
 		this.minCurve = minCurve;
 		this.maxCurve = maxCurve;
 		this.minLenght = minLenght;
 		this.maxLenght = maxLenght;
+		this.width = width;
 		
 		sectionCurves = new Array<Float>();
 		sectionLengths = new Array<Float>();

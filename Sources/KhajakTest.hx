@@ -35,7 +35,7 @@ class KhajakTest {
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		InputManager.init(new InputManager());		
-		TrackGenerator.init(new TrackGenerator(42, 1, 5, 10, 20));
+		TrackGenerator.init(new TrackGenerator(42, 1, 5, 50, 75, 7));
 		
 		Renderer.the.light1.position = new FastVector3(5, 500, 5);
 		Renderer.the.light1.power = 150000;
@@ -54,10 +54,10 @@ class KhajakTest {
 		var x: Float;
 		var y: Float;
 		for (i in 0...100) {
-			x = i;
+			x = i * 5;
 			y = TrackGenerator.the.getY(x);
-			Renderer.the.objects.push(new Stone(new Vector4(y - 7, 0, x * 5)));
-			Renderer.the.objects.push(new Stone(new Vector4(y + 7, 0, x * 5)));
+			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 1.5), 0, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 1.5), 0, x)));
 		}
 		
 		lastTime = Scheduler.time();
@@ -114,7 +114,7 @@ class KhajakTest {
 		g2.begin(false);
 		
 		g2.color = Color.White;
-		var nextY = 0.0;
+		/*var nextY = 0.0;
 		var lastY = TrackGenerator.the.getY(0) + System.pixelHeight / 2;
 		for (i in 1...System.pixelWidth) {
 			nextY = TrackGenerator.the.getY(i / 10) * 10 + System.pixelHeight / 2;
@@ -122,7 +122,7 @@ class KhajakTest {
 			g2.drawLine((i - 1), lastY - 25, i, nextY - 25);
 			g2.drawLine((i - 1), lastY + 25, i, nextY + 25);
 			lastY = nextY;
-		}
+		}*/
 		
 		var padding = 25;
 		var fontSize = 16;
