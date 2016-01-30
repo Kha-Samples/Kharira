@@ -54,7 +54,7 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(-2, 0.1, 0)), new Boat(new Vector4(2, 0.1, 0))];
+		boats = [new Boat(new Vector4(-2, 0.1, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(2, 0.1, 0), kha.Color.fromBytes(139, 90, 43))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}

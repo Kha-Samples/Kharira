@@ -1,5 +1,6 @@
 package;
 
+import kha.Color;
 import kha.math.Matrix4;
 import kha.math.FastMatrix4;
 import kha.math.Vector3;
@@ -21,8 +22,8 @@ class Boat extends RenderObject {
 	private var rotationDir: Float;
 	private var rotationStrength: Float;
 	
-	public function new(position: Vector4) {
-		super(Meshes.Boat, kha.Color.fromBytes(102, 51, 0), kha.Assets.images.black);
+	public function new(position: Vector4, color: Color) {
+		super(Meshes.Boat, color, kha.Assets.images.black);
 		
 		resetMovement();
 		this.position = position;
