@@ -20,6 +20,7 @@ class KhajakTest {
 	var billboardMesh: Mesh;
 	var box: RenderObject;
 	var emitter: Emitter;
+	var water: Water;
 	var initialized: Bool;
 	
 	public function new() {
@@ -46,6 +47,8 @@ class KhajakTest {
 		
 		/*emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
 		Renderer.the.particleEmitters.push(emitter);*/
+		
+		water = new Water();
 		
 		lastTime = Scheduler.time();
 		initialized = true;
@@ -79,6 +82,8 @@ class KhajakTest {
 
 	function render(framebuffer: Framebuffer): Void {
 		if (!initialized) return;
+		
+		water.render(framebuffer);
 		
 		Renderer.the.render(framebuffer);
 		
