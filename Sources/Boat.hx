@@ -21,12 +21,13 @@ class Boat extends RenderObject {
 	private var impulse: Vector4;
 	private var rotationDir: Float;
 	private var rotationStrength: Float;
-	
+	private var startingPosition: Vector4;
+		
 	public function new(position: Vector4, color: Color) {
 		super(Meshes.Boat, color, kha.Assets.images.black);
 		
-		resetMovement();
-		this.position = position;
+		startingPosition = position;
+		resetAll();
 	}
 	
 	private function resetMovement() {
@@ -63,5 +64,10 @@ class Boat extends RenderObject {
 	
 	public function getDistFromTrackCenter(): Float {
 		return Math.abs(TrackGenerator.the.getY(position.z) - position.x);
+	}
+	
+	public function resetAll() {
+		resetMovement();
+		position = startingPosition;
 	}
 }
