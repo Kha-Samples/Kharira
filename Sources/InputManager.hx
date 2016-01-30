@@ -27,6 +27,7 @@ class InputManager {
     }
 
     function onKeyUp(inputKey : Key, inputChar : String) {
+		if (inputChar == " ") TrackGenerator.the.generate();
     }
 	
 	function onGamepadAxis(padID: Int, axis: Int, value: Float) {

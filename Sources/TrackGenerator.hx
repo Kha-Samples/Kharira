@@ -3,21 +3,41 @@ package;
 class TrackGenerator {
 	
 	private var sections: Int;
+	private var minCurve: Float;
+	private var maxCurve: Float;
+	private var minLenght: Float;
+	private var maxLenght: Float;
 	private var sectionCurves: Array<Float>;
 	private var sectionLengths: Array<Float>;
 	
-	public function new(sections: Int) {
+	public static var the(default, null): TrackGenerator;
+	
+	public function new(sections: Int, minCurve: Float, maxCurve: Float, minLenght: Float, maxLenght: Float) {
 		this.sections = sections;
+		this.minCurve = minCurve;
+		this.maxCurve = maxCurve;
+		this.minLenght = minLenght;
+		this.maxLenght = maxLenght;
+		
 		sectionCurves = new Array<Float>();
 		sectionLengths = new Array<Float>();
 		
-		var lastCurve = 2.5;
+		generate();
+	}
+	
+	public static function init(trackGenerator: TrackGenerator) {
+		the = trackGenerator;
+	}
+	
+	public function generate() {
+		var lastCurve = (maxCurve - minCurve) / 2;
+		var lastLength = (maxLenght - minLenght) / 2;
 		for (i in 0...sections) {
-			var lastCurve = getRandomValue(Math.max(lastCurve - 1.5, 1), Math.min(lastCurve + 1.5, 5));
-			sectionCurves.push(lastCurve);
-			sectionLengths.push(getRandomValue(5, 10));
-		}
-		
+			lastCurve = getRandomValue(Math.max(lastCurve - 1.0, minCurve), Math.min(lastCurve + 1.0, maxCurve));
+			sectionCurves[i] = lastCurve;
+			lastLength = getRandomValue(Math.max(lastLength - 1.0, minLenght), Math.min(lastLength + 1.0, maxLenght));
+			sectionLengths[i] = lastLength;
+		}	
 	}
 	
 	public function getY(x: Float): Float {

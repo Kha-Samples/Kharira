@@ -20,7 +20,6 @@ class KhajakTest {
 	var billboardMesh: Mesh;
 	var box: RenderObject;
 	var emitter: Emitter;
-	var trackGenerator: TrackGenerator;
 	var initialized: Bool;
 	
 	public function new() {
@@ -34,20 +33,19 @@ class KhajakTest {
 	
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
-		InputManager.init(new InputManager());
+		InputManager.init(new InputManager());		
+		TrackGenerator.init(new TrackGenerator(42, 1, 5, 5, 10));
 		
 		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
 		Renderer.the.light1.color = Color.White;
 		
-		boxMesh = Mesh.FromModel(Assets.blobs.cube_obj.toString());
+		/*boxMesh = Mesh.FromModel(Assets.blobs.cube_obj.toString());
 		box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
 		Renderer.the.objects.push(box);
 		
 		emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
-		Renderer.the.particleEmitters.push(emitter);
-		
-		trackGenerator= new TrackGenerator(42);
+		Renderer.the.particleEmitters.push(emitter);*/
 		
 		lastTime = Scheduler.time();
 		initialized = true;
@@ -75,9 +73,9 @@ class KhajakTest {
 		g2.begin(false);
 		
 		var nextY = 0.0;
-		var lastY = trackGenerator.getY(0) * 10 + System.pixelHeight / 2;
+		var lastY = TrackGenerator.the.getY(0) * 10 + System.pixelHeight / 2;
 		for (i in 1...System.pixelWidth) {
-			nextY = trackGenerator.getY(i / 10) * 10 + System.pixelHeight / 2;
+			nextY = TrackGenerator.the.getY(i / 10) * 10 + System.pixelHeight / 2;
 			g2.drawLine((i - 1), lastY, i, nextY);
 			g2.drawLine((i - 1), lastY - 25, i, nextY - 25);
 			g2.drawLine((i - 1), lastY + 25, i, nextY + 25);
