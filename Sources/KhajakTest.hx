@@ -16,6 +16,8 @@ import khajak.Renderer;
 import khajak.RenderObject;
 
 class KhajakTest {
+	public static var TRACK_LENGHT = 150;
+	
 	var lastTime: Float;
 	
 	var boats: Array<Boat>;
@@ -23,6 +25,7 @@ class KhajakTest {
 	
 	var gameRunning: Bool;
 	var playerReady: Array<Bool>;
+	var playerWon: Array<Bool>;
 	var message: String;
 	
 	var initialized: Bool;
@@ -51,14 +54,15 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(-2, 0, 0)), new Boat(new Vector4(2, 0, 0))];
+		boats = [new Boat(new Vector4(-2, 0.1, 0)), new Boat(new Vector4(2, 0.1, 0))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}
 		
 		var x: Float;
 		var y: Float;
-		for (i in 0...100) {
+		var iMax = Std.int(TRACK_LENGHT / 5);
+		for (i in 0...iMax) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
 			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 0, x)));
@@ -67,6 +71,7 @@ class KhajakTest {
 		
 		gameRunning = false;
 		playerReady = [false, false];
+		playerWon = [false, false];
 		message = "";
 		
 		lastTime = Scheduler.time();
@@ -114,6 +119,12 @@ class KhajakTest {
 			boat.update(deltaTime);
 		}
 		
+		for (player in 0...2) {
+			if (!playerWon[1 - player] && boats[player].position.z >= (TRACK_LENGHT - 2)) {
+				playerWon[player] = true;
+				displayText("Player " + (player + 1) + " won!", 10);
+			}
+		}
 		for (emitter in Renderer.the.particleEmitters) {
 			emitter.update(deltaTime);
 		}

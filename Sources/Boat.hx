@@ -47,7 +47,7 @@ class Boat extends RenderObject {
 		var trackCenter = TrackGenerator.the.getY(position.z);
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();
-			position = new Vector4(trackCenter, 0, position.z - 5);
+			position = new Vector4(trackCenter, position.y, position.z - 5);
 		}
 		else {
 			impulse.length = Math.max(impulse.length * (1 - IMPULSE_DAMPING * deltaTime), 0);
