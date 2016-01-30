@@ -55,14 +55,16 @@ class Water {
 		vertexBuffer.unlock();
 		
 		indexBuffer = new IndexBuffer(50 * 50 * 6, Usage.StaticUsage);
-		var indices = indexBuffer.lock();
-		for (i in 0...49 * 49) {
-			indices[i * 6 + 0] = i;
-			indices[i * 6 + 1] = i + 1;
-			indices[i * 6 + 2] = i + 50;
-			indices[i * 6 + 3] = i + 50;
-			indices[i * 6 + 4] = i + 1;
-			indices[i * 6 + 5] = i + 50 + 1;
+		var indices = indexBuffer.lock();		
+		for (y in 0...49) {
+			for (x in 0...49) {
+				indices[y * 50 * 6 + x * 6 + 0] = y * 50 + x;
+				indices[y * 50 * 6 + x * 6 + 1] = y * 50 + x + 1;
+				indices[y * 50 * 6 + x * 6 + 2] = (y + 1) * 50 + x;
+				indices[y * 50 * 6 + x * 6 + 3] = (y + 1) * 50 + x;
+				indices[y * 50 * 6 + x * 6 + 4] = y * 50 + x + 1;
+				indices[y * 50 * 6 + x * 6 + 5] = (y + 1) * 50 + x + 1;
+			}
 		}
 		indexBuffer.unlock();
 	}
