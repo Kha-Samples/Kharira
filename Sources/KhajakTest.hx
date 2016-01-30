@@ -7,6 +7,7 @@ import kha.math.FastVector2;
 import kha.math.FastVector3;
 import kha.math.Vector2;
 import kha.math.Vector3;
+import kha.math.Vector4;
 import kha.Scheduler;
 import kha.System;
 import khajak.Mesh;
@@ -45,7 +46,7 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector3(-2, 0, 0)), new Boat(new Vector3(2, 0, 0))];
+		boats = [new Boat(new Vector4(-2, 0, 0)), new Boat(new Vector4(2, 0, 0))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}
@@ -90,7 +91,7 @@ class KhajakTest {
 		
 		var distances = new Array<Float>();
 		for (player in 0...2) {
-			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 10, boats[player].position.z - 10), FastVector3.fromVector3(boats[player].position));
+			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 10, boats[player].position.z - 10), new FastVector3(boats[player].position.x, boats[player].position.y, boats[player].position.z));
 			Renderer.the.beginRender(framebuffer, player);
 			water.render(framebuffer, Renderer.the.calculateMV());
 			Renderer.the.render(framebuffer, player);
