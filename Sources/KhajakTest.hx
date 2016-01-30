@@ -16,13 +16,17 @@ import khajak.Renderer;
 import khajak.RenderObject;
 
 class KhajakTest {
+	public static var TRACK_LENGHT = 150;
+	
 	var lastTime: Float;
 	
 	var boats: Array<Boat>;
 	var water: Water;
 	
 	var gameRunning: Bool;
+	var gameStopped: Bool;
 	var playerReady: Array<Bool>;
+	var playerWon: Array<Bool>;
 	var message: String;
 	
 	var initialized: Bool;
@@ -51,26 +55,36 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(-2, 0, 0)), new Boat(new Vector4(2, 0, 0))];
+		boats = [new Boat(new Vector4(2, 0.1, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 0.1, 0), kha.Color.fromBytes(139, 90, 43))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}
 		
 		var x: Float;
 		var y: Float;
-		for (i in 0...100) {
+		var iMax = Std.int(TRACK_LENGHT / 5);
+		for (i in 0...iMax) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
 			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 0, x)));
 			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 0, x)));
 		}
 		
-		gameRunning = false;
-		playerReady = [false, false];
-		message = "";
+		reset();
 		
 		lastTime = Scheduler.time();
 		initialized = true;
+	}
+	
+	function reset() {
+		gameRunning = false;
+		gameStopped = false;
+		playerReady = [false, false];
+		playerWon = [false, false];
+		message = "";
+		for (player in 0...2) {
+			boats[player].resetAll();
+		}
 	}
 
 	function update(): Void {
@@ -106,7 +120,7 @@ class KhajakTest {
 			if (gameRunning) {
 				Scheduler.addTimeTask(displayText.bind("Lower your paddle with a shoulder button").bind(3), 1);
 				Scheduler.addTimeTask(displayText.bind("Pull back using a trigger").bind(3), 5);
-				Scheduler.addTimeTask(displayText.bind("Experiment with the delay").bind(3), 9);
+				Scheduler.addTimeTask(displayText.bind("Experiment with the delay between your inputs").bind(3), 9);
 			}
 		}
 		
@@ -114,6 +128,14 @@ class KhajakTest {
 			boat.update(deltaTime);
 		}
 		
+		for (player in 0...2) {
+			if (!gameStopped && !playerWon[1 - player] && boats[player].position.z >= (TRACK_LENGHT - 5)) {
+				playerWon[player] = true;
+				displayText("Player " + (player + 1) + " won!", 10);
+				Scheduler.addTimeTask(reset, 11);
+				gameStopped = true;
+			}
+		}
 		for (emitter in Renderer.the.particleEmitters) {
 			emitter.update(deltaTime);
 		}

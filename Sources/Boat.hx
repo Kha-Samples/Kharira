@@ -1,5 +1,6 @@
 package;
 
+import kha.Color;
 import kha.math.Matrix4;
 import kha.math.FastMatrix4;
 import kha.math.Vector3;
@@ -20,12 +21,13 @@ class Boat extends RenderObject {
 	private var impulse: Vector4;
 	private var rotationDir: Float;
 	private var rotationStrength: Float;
-	
-	public function new(position: Vector4) {
-		super(Meshes.Boat, kha.Color.fromBytes(102, 51, 0), kha.Assets.images.black);
+	private var startingPosition: Vector4;
 		
-		resetMovement();
-		this.position = position;
+	public function new(position: Vector4, color: Color) {
+		super(Meshes.Boat, color, kha.Assets.images.black);
+		
+		startingPosition = position;
+		resetAll();
 	}
 	
 	private function resetMovement() {
@@ -47,7 +49,7 @@ class Boat extends RenderObject {
 		var trackCenter = TrackGenerator.the.getY(position.z);
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();
-			position = new Vector4(trackCenter, 0, position.z - 5);
+			position = new Vector4(trackCenter, position.y, position.z - 5);
 		}
 		else {
 			impulse.length = Math.max(impulse.length * (1 - IMPULSE_DAMPING * deltaTime), 0);
@@ -62,5 +64,10 @@ class Boat extends RenderObject {
 	
 	public function getDistFromTrackCenter(): Float {
 		return Math.abs(TrackGenerator.the.getY(position.z) - position.x);
+	}
+	
+	public function resetAll() {
+		resetMovement();
+		position = startingPosition;
 	}
 }
