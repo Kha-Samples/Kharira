@@ -61,8 +61,8 @@ class KhajakTest {
 		for (i in 0...100) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
-			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 1.5), 0, x)));
-			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 1.5), 0, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 0, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 0, x)));
 		}
 		
 		gameRunning = false;
