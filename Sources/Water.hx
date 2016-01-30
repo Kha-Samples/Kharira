@@ -1,6 +1,7 @@
 package;
 
 import kha.Framebuffer;
+import kha.graphics4.CompareMode;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.PipelineState;
 import kha.graphics4.TextureFormat;
@@ -42,6 +43,8 @@ class Water {
 		pipeline.inputLayout = [structure];
 		pipeline.vertexShader = Shaders.water_vert;
 		pipeline.fragmentShader = Shaders.water_frag;
+		pipeline.depthWrite = true;
+		pipeline.depthMode = CompareMode.Less;
 		pipeline.compile();
 		
 		vertexMapLocation = pipeline.getTextureUnit("tex");
