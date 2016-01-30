@@ -18,6 +18,7 @@ class KhajakTest {
 	var lastTime: Float;
 	
 	var boats: Array<Boat>;
+	var water: Water;
 	var initialized: Bool;
 	
 	public function new() {
@@ -43,6 +44,7 @@ class KhajakTest {
 		emitter.start(Math.POSITIVE_INFINITY);
 		Renderer.the.particleEmitters.push(emitter);*/
 		
+		water = new Water();
 		boats = [new Boat(new Vector3(-2, 0, 0)), new Boat(new Vector3(2, 0, 0))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
@@ -93,6 +95,8 @@ class KhajakTest {
 		
 			distances[player] = boats[player].position.z - boats[1 - player].position.z;
 		}
+		
+		//TODO: water.render(framebuffer);
 		
 		var g2 = framebuffer.g2;
 		
