@@ -11,9 +11,11 @@ class TrackGenerator {
 		sectionCurves = new Array<Float>();
 		sectionLengths = new Array<Float>();
 		
+		var lastCurve = 2.5;
 		for (i in 0...sections) {
-			sectionCurves.push(getRandomValue(1, 4));
-			sectionLengths.push(getRandomValue(10, 20));
+			var lastCurve = getRandomValue(Math.max(lastCurve - 1.5, 1), Math.min(lastCurve + 1.5, 5));
+			sectionCurves.push(lastCurve);
+			sectionLengths.push(getRandomValue(5, 10));
 		}
 		
 	}

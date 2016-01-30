@@ -79,6 +79,8 @@ class KhajakTest {
 		for (i in 1...System.pixelWidth) {
 			nextY = trackGenerator.getY(i / 10) * 10 + System.pixelHeight / 2;
 			g2.drawLine((i - 1), lastY, i, nextY);
+			g2.drawLine((i - 1), lastY - 25, i, nextY - 25);
+			g2.drawLine((i - 1), lastY + 25, i, nextY + 25);
 			lastY = nextY;
 		}
 		
