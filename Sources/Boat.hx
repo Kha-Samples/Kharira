@@ -14,7 +14,7 @@ class Boat extends RenderObject {
 	private var rotation: Vector3;
 	
 	public function new(position: Vector3) {
-		super(Meshes.Cube, kha.Color.Black, kha.Assets.images.cube);
+		super(Meshes.Boat, kha.Color.Black, kha.Assets.images.cube);
 		
 		this.position = position;
 		impulse = new Vector3();

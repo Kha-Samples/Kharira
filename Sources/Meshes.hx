@@ -3,7 +3,7 @@ package;
 import khajak.Mesh;
 
 class Meshes extends khajak.Meshes {
-		
+	
 	static var cube: Mesh;
 	public static var Cube(get, null): Mesh;
 	static function get_Cube() {
@@ -12,5 +12,15 @@ class Meshes extends khajak.Meshes {
 		}
 		
 		return cube;
+	}	
+	
+	static var boat: Mesh;
+	public static var Boat(get, null): Mesh;
+	static function get_Boat() {
+		if (boat == null) {
+			boat = Mesh.FromModel(kha.Assets.blobs.boat_obj.toString());
+		}
+		
+		return boat;
 	}
 }
