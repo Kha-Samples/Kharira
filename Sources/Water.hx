@@ -19,9 +19,12 @@ class Water {
 	var vertexMap: Image;
 	var vertexMapLocation: TextureUnit;
 	var matrixLocation: ConstantLocation;
+	var timeLocation: ConstantLocation;
 	var pipeline: PipelineState;
 	var vertexBuffer: VertexBuffer;
 	var indexBuffer: IndexBuffer;
+	static inline var xdiv: Int = 150;
+	static inline var ydiv: Int = 150;
 
 	public function new() {
 		new waves.Wavelet();
@@ -43,29 +46,30 @@ class Water {
 		
 		vertexMapLocation = pipeline.getTextureUnit("tex");
 		matrixLocation = pipeline.getConstantLocation("matrix");
+		timeLocation = pipeline.getConstantLocation("time");
 
-		vertexBuffer = new VertexBuffer(50 * 50, structure, Usage.DynamicUsage);
+		vertexBuffer = new VertexBuffer(xdiv * ydiv, structure, Usage.DynamicUsage);
 		var vertices = vertexBuffer.lock();
 		var ypos = -1.0;
 		var xpos = -1.0;
-		for (y in 0...50) {
-			for (x in 0...50) {
-				vertices.set(y * 50 * 2 + x * 2 + 0, (x - 25) / 25.0 * 50.0);
-				vertices.set(y * 50 * 2 + x * 2 + 1, (y - 25) / 25.0 * 50.0);
+		for (y in 0...ydiv) {
+			for (x in 0...xdiv) {
+				vertices.set(y * xdiv * 2 + x * 2 + 0, (x - (xdiv / 2)) / (xdiv / 2) * 50.0);
+				vertices.set(y * xdiv * 2 + x * 2 + 1, (y - (ydiv / 2)) / (ydiv / 2) * 50.0);
 			}
 		}
 		vertexBuffer.unlock();
 		
-		indexBuffer = new IndexBuffer(50 * 50 * 6, Usage.StaticUsage);
+		indexBuffer = new IndexBuffer(xdiv * ydiv * 6, Usage.StaticUsage);
 		var indices = indexBuffer.lock();		
-		for (y in 0...49) {
-			for (x in 0...49) {
-				indices[y * 50 * 6 + x * 6 + 0] = y * 50 + x;
-				indices[y * 50 * 6 + x * 6 + 1] = y * 50 + x + 1;
-				indices[y * 50 * 6 + x * 6 + 2] = (y + 1) * 50 + x;
-				indices[y * 50 * 6 + x * 6 + 3] = (y + 1) * 50 + x;
-				indices[y * 50 * 6 + x * 6 + 4] = y * 50 + x + 1;
-				indices[y * 50 * 6 + x * 6 + 5] = (y + 1) * 50 + x + 1;
+		for (y in 0...ydiv - 1) {
+			for (x in 0...xdiv - 1) {
+				indices[y * xdiv * 6 + x * 6 + 0] = y * xdiv + x;
+				indices[y * xdiv * 6 + x * 6 + 1] = y * xdiv + x + 1;
+				indices[y * xdiv * 6 + x * 6 + 2] = (y + 1) * xdiv + x;
+				indices[y * xdiv * 6 + x * 6 + 3] = (y + 1) * xdiv + x;
+				indices[y * xdiv * 6 + x * 6 + 4] = y * xdiv + x + 1;
+				indices[y * xdiv * 6 + x * 6 + 5] = (y + 1) * xdiv + x + 1;
 			}
 		}
 		indexBuffer.unlock();
@@ -74,6 +78,7 @@ class Water {
 	public function render(framebuffer: Framebuffer, matrix: FastMatrix4): Void {
 		var g = framebuffer.g4;
 		g.setPipeline(pipeline);
+		g.setFloat(timeLocation, kha.Scheduler.time() * 5);
 		g.setMatrix(matrixLocation, matrix);
 		g.setTexture(vertexMapLocation, vertexMap);
 		g.setIndexBuffer(indexBuffer);
