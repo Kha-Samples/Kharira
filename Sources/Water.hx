@@ -24,6 +24,8 @@ class Water {
 	var indexBuffer: IndexBuffer;
 
 	public function new() {
+		new waves.Wavelet();
+		
 		vertexMap = Image.create(1024, 1024, TextureFormat.L8);
 		var pixels = vertexMap.lock();
 		for (y in 0...1024)
