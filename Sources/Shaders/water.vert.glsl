@@ -4,6 +4,7 @@ uniform sampler2D tex;
 
 attribute vec2 pos;
 
-void main() {  
-	gl_Position = vec4(texture2D(tex, pos).xy, 0.0, 1.0);
+void main() {
+	vec4 coord = texture2D(tex, pos);
+	gl_Position = vec4(pos.x, coord.r, pos.y, 1.0);
 }
