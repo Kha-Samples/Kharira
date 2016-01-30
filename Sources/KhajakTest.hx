@@ -34,7 +34,7 @@ class KhajakTest {
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		InputManager.init(new InputManager());		
-		TrackGenerator.init(new TrackGenerator(42, 1, 5, 5, 10));
+		TrackGenerator.init(new TrackGenerator(42, 1, 5, 10, 20));
 		
 		Renderer.the.light1.position = new FastVector3(5, 5, 5);
 		Renderer.the.light1.power = 100;
@@ -73,7 +73,7 @@ class KhajakTest {
 		g2.begin(false);
 		
 		var nextY = 0.0;
-		var lastY = TrackGenerator.the.getY(0) * 10 + System.pixelHeight / 2;
+		var lastY = TrackGenerator.the.getY(0) + System.pixelHeight / 2;
 		for (i in 1...System.pixelWidth) {
 			nextY = TrackGenerator.the.getY(i / 10) * 10 + System.pixelHeight / 2;
 			g2.drawLine((i - 1), lastY, i, nextY);
