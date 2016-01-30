@@ -40,11 +40,11 @@ class KhajakTest {
 		Renderer.the.light1.power = 100;
 		Renderer.the.light1.color = Color.White;
 		
-		/*boxMesh = Mesh.FromModel(Assets.blobs.cube_obj.toString());
+		boxMesh = Mesh.FromModel(Assets.blobs.cube_obj.toString());
 		box = new RenderObject(boxMesh, Color.Black, Assets.images.cube);
 		Renderer.the.objects.push(box);
 		
-		emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
+		/*emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		lastTime = Scheduler.time();
@@ -56,6 +56,20 @@ class KhajakTest {
 		
 		var deltaTime = Scheduler.time() - lastTime;
 		lastTime = Scheduler.time();
+		
+		var left: Float;
+		var right: Float;
+		for (player in 0...2) {
+			left = InputManager.the.getStrength(player, false);
+			right = InputManager.the.getStrength(player, true);
+			
+			if (left > 0) {
+				trace("[player " + player + "] left = " + left);
+			}
+			if (right > 0) {
+				trace("[player " + player + "] right = " + right);
+			}
+		}
 		
 		for (emitter in Renderer.the.particleEmitters) {
 			emitter.update(deltaTime);
