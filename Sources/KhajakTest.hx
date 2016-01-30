@@ -36,8 +36,8 @@ class KhajakTest {
 		InputManager.init(new InputManager());		
 		TrackGenerator.init(new TrackGenerator(42, 1, 5, 10, 20));
 		
-		Renderer.the.light1.position = new FastVector3(5, 5, 5);
-		Renderer.the.light1.power = 100;
+		Renderer.the.light1.position = new FastVector3(5, 500, 5);
+		Renderer.the.light1.power = 150000;
 		Renderer.the.light1.color = Color.White;
 			
 		/*var emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
