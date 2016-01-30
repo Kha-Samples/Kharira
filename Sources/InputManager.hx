@@ -15,6 +15,8 @@ class InputManager {
 	
 	private var strenghtLeft: Array<Bool>;
 	private var strenght: Array<Float>;
+	private var inverted: Array<Bool>;
+	private var invertedDown: Array<Bool>;
 	
 	private var time: Array<Float>;
 	
@@ -22,6 +24,8 @@ class InputManager {
 		leftSide = [false, false];
 		rightSide = [false, false];
 		strenghtLeft = [false, false];
+		inverted = [false, false];
+		invertedDown = [false, false];
 		strenght = [0.0, 0.0];
 		time = [0.0, 0.0];
 		
@@ -35,9 +39,9 @@ class InputManager {
 	}
 	
 	public function getStrength(ID: Int, left: Bool): Float {
-		if (left && !strenghtLeft[ID])
+		if (left != inverted[ID] && !strenghtLeft[ID])
 			return 0.0;
-		if (!left && strenghtLeft[ID])
+		if (left == inverted[ID] && strenghtLeft[ID])
 			return 0.0;
 		
 		var result = strenght[ID];
@@ -56,7 +60,6 @@ class InputManager {
     }
 
     function onKeyUp(inputKey : Key, inputChar : String) {
-		if (inputChar == " ") TrackGenerator.the.generate();
     }
 	
 	function onGamepadAxis(padID: Int, axis: Int, value: Float) {
@@ -64,7 +67,17 @@ class InputManager {
 	}
 	
 	function onGamepadButton(padID: Int, button: Int, value: Float) {
-		if (button == 4) {
+		if (button == 3) {
+			var down = value > 0.75;
+			if (invertedDown[padID] && !down) {
+				invertedDown[padID] = false;
+			}
+			else if (!invertedDown[padID] && down) {
+				invertedDown[padID] = true;
+				inverted[padID] = !inverted[padID];
+			}
+		}
+		else if (button == 4) {
 			rightSide[padID] = false;
 			leftSide[padID] = true;
 			strenght[padID] = 0.0;
