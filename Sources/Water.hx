@@ -1,9 +1,12 @@
 package;
 
 import kha.Framebuffer;
+import kha.graphics4.IndexBuffer;
 import kha.graphics4.PipelineState;
 import kha.graphics4.TextureFormat;
 import kha.graphics4.TextureUnit;
+import kha.graphics4.Usage;
+import kha.graphics4.VertexBuffer;
 import kha.graphics4.VertexData;
 import kha.graphics4.VertexStructure;
 import kha.Image;
@@ -13,7 +16,9 @@ import kha.Shaders;
 class Water {
 	var vertexMap: Image;
 	var vertexMapLocation: TextureUnit;
-	var waterPipeline: PipelineState;
+	var pipeline: PipelineState;
+	var vertexBuffer: VertexBuffer;
+	var indexBuffer: IndexBuffer;
 
 	public function new() {
 		vertexMap = Image.create(1024, 1024, TextureFormat.L8);
@@ -25,18 +30,45 @@ class Water {
 		
 		var structure = new VertexStructure();
 		structure.add("pos", VertexData.Float2);
-		waterPipeline = new PipelineState();
-		waterPipeline.inputLayout = [structure];
-		waterPipeline.vertexShader = Shaders.water_vert;
-		waterPipeline.fragmentShader = Shaders.water_frag;
-		waterPipeline.compile();
+		pipeline = new PipelineState();
+		pipeline.inputLayout = [structure];
+		pipeline.vertexShader = Shaders.water_vert;
+		pipeline.fragmentShader = Shaders.water_frag;
+		pipeline.compile();
 		
-		vertexMapLocation = waterPipeline.getTextureUnit("tex");
+		vertexMapLocation = pipeline.getTextureUnit("tex");
+
+		vertexBuffer = new VertexBuffer(50 * 50, structure, Usage.DynamicUsage);
+		var vertices = vertexBuffer.lock();
+		var ypos = -1.0;
+		var xpos = -1.0;
+		for (y in 0...50) {
+			for (x in 0...50) {
+				vertices.set(y * 50 * 2 + x * 2 + 0, (x - 25) / 25.0);
+				vertices.set(y * 50 * 2 + x * 2 + 0, (y - 25) / 25.0);
+			}
+		}
+		vertexBuffer.unlock();
+		
+		indexBuffer = new IndexBuffer(50 * 50 * 6, Usage.StaticUsage);
+		var indices = indexBuffer.lock();
+		for (i in 0...49 * 49) {
+			indices[i * 6 + 0] = i;
+			indices[i * 6 + 1] = i + 1;
+			indices[i * 6 + 2] = i + 50;
+			indices[i * 6 + 3] = i + 50;
+			indices[i * 6 + 4] = i + 1;
+			indices[i * 6 + 5] = i + 50 + 1;
+		}
+		indexBuffer.unlock();
 	}
 	
 	public function render(framebuffer: Framebuffer): Void {
 		var g = framebuffer.g4;
+		g.setPipeline(pipeline);
 		g.setTexture(vertexMapLocation, vertexMap);
-		
+		g.setIndexBuffer(indexBuffer);
+		g.setVertexBuffer(vertexBuffer);
+		g.drawIndexedVertices();
 	}
 }
