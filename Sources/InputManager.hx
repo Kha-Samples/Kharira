@@ -86,6 +86,7 @@ class InputManager {
 			currentLeft[0] = true;
 			strenght[0] = 0.0;
 			time[0] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (inputChar == "u") {
 			rightSide[1] = false;
@@ -93,6 +94,7 @@ class InputManager {
 			currentLeft[1] = true;
 			strenght[1] = 0.0;
 			time[1] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (inputChar == "e") {
 			rightSide[0] = true;
@@ -100,6 +102,7 @@ class InputManager {
 			currentLeft[0] = false;
 			strenght[0] = 0.0;
 			time[0] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (inputChar == "o") {
 			rightSide[1] = true;
@@ -107,6 +110,7 @@ class InputManager {
 			currentLeft[1] = false;
 			strenght[1] = 0.0;
 			time[1] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (inputChar == "a") {
 			if (leftSide[0]) {
@@ -114,6 +118,7 @@ class InputManager {
 				leftSide[0] = false;
 				strenghtLeft[0] = true;
 				time[0] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
 		else if (inputChar == "j") {
@@ -122,6 +127,7 @@ class InputManager {
 				leftSide[1] = false;
 				strenghtLeft[1] = true;
 				time[1] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
 		else if (inputChar == "d") {
@@ -130,6 +136,7 @@ class InputManager {
 				rightSide[0] = false;
 				strenghtLeft[0] = false;
 				time[0] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
 		else if (inputChar == "l") {
@@ -138,6 +145,7 @@ class InputManager {
 				rightSide[1] = false;
 				strenghtLeft[1] = false;
 				time[1] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
     }
@@ -176,6 +184,7 @@ class InputManager {
 			currentLeft[padID] = true;
 			strenght[padID] = 0.0;
 			time[padID] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (button == 5 && value > TRIGGER_THRESHOLD) {
 			rightSide[padID] = true;
@@ -183,6 +192,7 @@ class InputManager {
 			currentLeft[padID] = false;
 			strenght[padID] = 0.0;
 			time[padID] = Scheduler.time();
+			kha.audio1.Audio.play(kha.Assets.sounds.insert);
 		}
 		else if (button == 6 && value > TRIGGER_THRESHOLD) {
 			if (leftSide[padID]) {
@@ -190,6 +200,7 @@ class InputManager {
 				leftSide[padID] = false;
 				strenghtLeft[padID] = true;
 				time[padID] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
 		else if (button == 7 && value > TRIGGER_THRESHOLD) {
@@ -198,6 +209,7 @@ class InputManager {
 				rightSide[padID] = false;
 				strenghtLeft[padID] = false;
 				time[padID] = Math.NEGATIVE_INFINITY;
+				kha.audio1.Audio.play(kha.Assets.sounds.pull);
 			}
 		}
 		//trace("[button_" + padID + "] " + button + ": " + value);
