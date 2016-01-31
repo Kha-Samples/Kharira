@@ -47,6 +47,7 @@ class Boat extends RenderObject {
 	}
 	
 	public function update(deltaTime: Float) {
+		position.y = Water.map(new Vector2(position.x, position.z));
 		var trackCenter = TrackGenerator.the.getY(position.z);
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();

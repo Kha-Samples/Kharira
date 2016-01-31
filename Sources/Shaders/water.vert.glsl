@@ -10,7 +10,7 @@ varying mediump vec4 color;
 
 const int ITER_GEOMETRY = 3;
 const float SEA_CHOPPY = 4.0;
-const float SEA_SPEED = 0.8;
+const float SEA_SPEED = 0.8 * 5.0;
 const float SEA_FREQ = 0.16;
 const float SEA_HEIGHT = 0.6;
 mat2 octave_m = mat2(1.6,1.2,-1.2,1.6);
@@ -31,7 +31,7 @@ float noise( in vec2 p ) {
 }
 
 float sea_octave(vec2 uv, float choppy) {
-    uv += noise(uv);        
+    uv += noise(uv);
     vec2 wv = 1.0-abs(sin(uv));
     vec2 swv = abs(cos(uv));    
     wv = mix(wv,swv,wv);

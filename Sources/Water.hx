@@ -83,7 +83,7 @@ class Water {
 	public function render(framebuffer: Framebuffer, matrix: FastMatrix4): Void {
 		var g = framebuffer.g4;
 		g.setPipeline(pipeline);
-		g.setFloat(timeLocation, kha.Scheduler.time() * 5);
+		g.setFloat(timeLocation, kha.Scheduler.time());
 		g.setMatrix(matrixLocation, matrix);
 		g.setTexture(vertexMapLocation, vertexMap);
 		g.setIndexBuffer(indexBuffer);
@@ -93,7 +93,7 @@ class Water {
 	
 	static inline var ITER_GEOMETRY = 3;
 	static inline var SEA_CHOPPY = 4.0;
-	static inline var SEA_SPEED = 0.8;
+	static inline var SEA_SPEED = 0.8 * 5.0;
 	static inline var SEA_FREQ = 0.16;
 	static inline var SEA_HEIGHT = 0.6;
 	static var octave_m = new Matrix2(1.6, 1.2, -1.2, 1.6);
@@ -176,11 +176,11 @@ class Water {
 		var d = 0.0;
 		var h = 0.0;
 		for (i in 0...3) {
-			d = sea_octave(add(uv, SEA_TIME).mult(freq),choppy);
-			d += sea_octave(add(uv, -SEA_TIME).mult(freq),choppy);
+			d = sea_octave(add(uv, SEA_TIME).mult(freq), choppy);
+			d += sea_octave(add(uv, -SEA_TIME).mult(freq), choppy);
 			h += d * amp;
-			uv = octave_m.multvec(uv); freq *= 1.9; amp *= 0.22;
-			choppy = mix(choppy,1.0,0.2);
+			uv = octave_m.transpose().multvec(uv); freq *= 1.9; amp *= 0.22;
+			choppy = mix(choppy, 1.0, 0.2);
 		}
 		return h;// p.y - h;
 	}
