@@ -62,8 +62,8 @@ class KhajakTest {
 		var paddles = [new Paddle(colors[0]), new Paddle(colors[1])];
 		boats = [new Boat(new Vector4(2, 1.2, 0), colors[0], paddles[0]), new Boat(new Vector4(-2, 1.2, 0), colors[1], paddles[1])];
 		for (i in 0...2) {
-			Renderer.the.objects.push(paddles[i]);
 			Renderer.the.objects.push(boats[i]);
+			Renderer.the.objects.push(paddles[i]);
 		}
 		
 		var x: Float;
