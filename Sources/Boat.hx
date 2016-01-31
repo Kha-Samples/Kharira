@@ -66,8 +66,13 @@ class Boat extends RenderObject {
 		
 		model = FastMatrix4.translation(position.x, position.y, position.z).multmat(FastMatrix4.rotationY(angle));
 		var paddleOffset = paddleLeft ? 1.5 : -1.5;
-		var paddleRotation = -paddleRot * 0.25 * Math.PI;
-		paddle.model = FastMatrix4.translation(position.x, position.y, position.z).multmat(FastMatrix4.rotationY(angle).multmat(FastMatrix4.translation(paddleOffset, 0, 0).multmat(FastMatrix4.rotationX(paddleRotation).multmat(FastMatrix4.scale(1.1, 1.1, 1.1)))));
+		var paddleRotation = 0.125 * Math.PI - paddleRot * 0.25 * Math.PI;
+		paddle.model = FastMatrix4.translation(position.x, position.y + 1.5, position.z).multmat(
+			FastMatrix4.rotationY(angle).multmat(
+				FastMatrix4.translation(paddleOffset, 0, 0).multmat(
+					FastMatrix4.rotationX(paddleRotation).multmat(
+						FastMatrix4.translation(0, -1.5, 0).multmat(
+							FastMatrix4.scale(1.1, 1.1, 1.1))))));
 	}
 	
 	public function getDistFromTrackCenter(): Float {

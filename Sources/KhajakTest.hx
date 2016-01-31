@@ -16,7 +16,7 @@ import khajak.Renderer;
 import khajak.RenderObject;
 
 class KhajakTest {
-	public static var TRACK_LENGHT = 150;
+	public static var TRACK_LENGHT = 250;
 	
 	var lastTime: Float;
 	
@@ -44,7 +44,7 @@ class KhajakTest {
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		InputManager.init(new InputManager());		
-		TrackGenerator.init(new TrackGenerator(42, 1, 5, 50, 75, 7));
+		TrackGenerator.init(new TrackGenerator(42, 3, 8, 50, 75, 7));
 		
 		Renderer.the.light1.position = new FastVector3(5, 500, 5);
 		Renderer.the.light1.power = 150000;
@@ -96,7 +96,7 @@ class KhajakTest {
 		var deltaTime = Scheduler.time() - lastTime;
 		lastTime = Scheduler.time();
 		
-		if (gameRunning) {
+		if (gameRunning && !gameStopped) {
 			var left: Float;
 			var right: Float;
 			for (player in 0...2) {
@@ -113,7 +113,7 @@ class KhajakTest {
 				}
 			}
 		}
-		else {
+		else if (!gameRunning) {
 			var ready = true;
 			for (player in 0...2) {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
@@ -128,7 +128,7 @@ class KhajakTest {
 		}
 		
 		for (i in 0...2) {
-			boats[i].update(deltaTime, InputManager.the.currentLeft[i], InputManager.the.getCharge(i));
+			boats[i].update(deltaTime, InputManager.the.currentLeft[i] && (gameRunning && !gameStopped), (gameRunning && !gameStopped) ? InputManager.the.getCharge(i) : 0);
 		}
 		
 		for (player in 0...2) {
@@ -204,7 +204,7 @@ class KhajakTest {
 			}
 		}
 		
-		if (!gameRunning) {
+		if (!gameRunning || gameStopped) {
 			fontSize = 12;
 			g2.fontSize = fontSize;
 			
