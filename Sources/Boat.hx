@@ -3,6 +3,7 @@ package;
 import kha.Color;
 import kha.math.Matrix4;
 import kha.math.FastMatrix4;
+import kha.math.Vector2;
 import kha.math.Vector3;
 import kha.math.Vector4;
 import khajak.RenderObject;
@@ -22,7 +23,7 @@ class Boat extends RenderObject {
 	private var rotationDir: Float;
 	private var rotationStrength: Float;
 	private var startingPosition: Vector4;
-		
+	
 	public function new(position: Vector4, color: Color) {
 		super(Meshes.Boat, color, kha.Assets.images.black);
 		
