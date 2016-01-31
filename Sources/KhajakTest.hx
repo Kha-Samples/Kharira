@@ -209,11 +209,11 @@ class KhajakTest {
 			g2.fontSize = fontSize;
 			
 			s = "A Global Game Jam 2016 game";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 4.5);
 			s = "by Robert Konrad and Christian Reuter";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 1.5);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 3);
 			s = "made with Kha (http://kode.tech)";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 3);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 1.5);
 			
 			fontSize = 48;
 			g2.fontSize = fontSize;
@@ -221,6 +221,8 @@ class KhajakTest {
 			s = "Khajak";
 			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (System.pixelHeight / 3 - font.height(fontSize)) / 2);
 		}
+		
+		g2.drawImage(Assets.images.controller, (System.pixelWidth - 600) / 2, System.pixelHeight - 90);
 		
 		g2.end();
 	}
