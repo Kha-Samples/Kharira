@@ -124,7 +124,7 @@ class KhajakTest {
 			for (player in 0...2) {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
 				ready = ready && playerReady[player];
-				if (ready) {
+				if (playerReady[player]) {
 					message[player * 2 + 0] = "";
 					message[player * 2 + 1] = "";
 				}
