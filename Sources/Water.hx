@@ -23,11 +23,12 @@ class Water {
 	var vertexMapLocation: TextureUnit;
 	var matrixLocation: ConstantLocation;
 	var timeLocation: ConstantLocation;
+	var zoffsetLocation: ConstantLocation;
 	var pipeline: PipelineState;
 	var vertexBuffer: VertexBuffer;
 	var indexBuffer: IndexBuffer;
-	static inline var xdiv: Int = 150;
-	static inline var ydiv: Int = 150;
+	static inline var xdiv: Int = 100;
+	static inline var ydiv: Int = 250;
 
 	public function new() {
 		new waves.Wavelet();
@@ -52,6 +53,7 @@ class Water {
 		vertexMapLocation = pipeline.getTextureUnit("tex");
 		matrixLocation = pipeline.getConstantLocation("matrix");
 		timeLocation = pipeline.getConstantLocation("time");
+		zoffsetLocation = pipeline.getConstantLocation("zoffset");
 
 		vertexBuffer = new VertexBuffer(xdiv * ydiv, structure, Usage.DynamicUsage);
 		var vertices = vertexBuffer.lock();
@@ -59,8 +61,8 @@ class Water {
 		var xpos = -1.0;
 		for (y in 0...ydiv) {
 			for (x in 0...xdiv) {
-				vertices.set(y * xdiv * 2 + x * 2 + 0, (x - (xdiv / 2)) / (xdiv / 2) * 50.0);
-				vertices.set(y * xdiv * 2 + x * 2 + 1, (y - (ydiv / 2)) / (ydiv / 2) * 50.0);
+				vertices.set(y * xdiv * 2 + x * 2 + 0, (x - (xdiv / 2)) / (xdiv / 2) * 30.0);
+				vertices.set(y * xdiv * 2 + x * 2 + 1, (y - (ydiv / 2)) / (ydiv / 2) * 100.0);
 			}
 		}
 		vertexBuffer.unlock();
@@ -80,10 +82,11 @@ class Water {
 		indexBuffer.unlock();
 	}
 	
-	public function render(framebuffer: Framebuffer, matrix: FastMatrix4): Void {
+	public function render(framebuffer: Framebuffer, matrix: FastMatrix4, zposition: Float): Void {
 		var g = framebuffer.g4;
 		g.setPipeline(pipeline);
 		g.setFloat(timeLocation, kha.Scheduler.time());
+		g.setFloat(zoffsetLocation, zposition - 5.0);
 		g.setMatrix(matrixLocation, matrix);
 		g.setTexture(vertexMapLocation, vertexMap);
 		g.setIndexBuffer(indexBuffer);

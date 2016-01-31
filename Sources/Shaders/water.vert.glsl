@@ -3,6 +3,7 @@
 uniform sampler2D tex;
 uniform mat4 matrix;
 uniform float time;
+uniform float zoffset;
 
 attribute vec2 pos;
 
@@ -72,8 +73,9 @@ float map(vec2 uv) {
 }
 
 void main() {
+	vec2 newpos = vec2(pos.x, pos.y + zoffset);
 	//vec4 coord = texture2D(tex, pos);
-	float height = map(pos); //sin(pos.x + time) * sin(pos.x + time * 1.1) + sin(pos.y + time * 1.1) * sin(pos.y + time * 1.2);
-	gl_Position = matrix * vec4(pos.x, height /*coord.r*/, pos.y, 1.0);
+	float height = map(newpos); //sin(pos.x + time) * sin(pos.x + time * 1.1) + sin(pos.y + time * 1.1) * sin(pos.y + time * 1.2);
+	gl_Position = matrix * vec4(newpos.x, height /*coord.r*/, newpos.y, 1.0);
 	color = vec4(height / 2.0, height / 2.0, 1.0 + height / 2.0 /*coord.r*/, 0.0);
 }
