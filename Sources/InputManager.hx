@@ -15,27 +15,20 @@ class InputManager {
 	
 	public var strenghtLeft: Array<Bool>;
 	private var strenght: Array<Float>;
-	private var inverted: Array<Bool>;
-	private var invertedDown: Array<Bool>;
 	private var startDown: Array<Bool>;
 	
 	public var currentLeft(default, null): Array<Bool>;
 	
 	private var time: Array<Float>;
 	
-	public var forceStart: Bool;
-	
 	public function new() {
 		leftSide = [false, false];
 		rightSide = [false, false];
 		strenghtLeft = [false, false];
-		inverted = [false, false];
-		invertedDown = [false, false];
 		startDown = [false, false];
 		currentLeft = [false, false];
 		strenght = [0.0, 0.0];
 		time = [Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY];
-		forceStart = false;
 		
 		for (i in 0...2) {
 			registerGamepadListenener(i);
@@ -55,9 +48,9 @@ class InputManager {
 	}
 	
 	public function getStrength(ID: Int, left: Bool): Float {
-		if (left != inverted[ID] && !strenghtLeft[ID])
+		if (left && !strenghtLeft[ID])
 			return 0.0;
-		if (left == inverted[ID] && strenghtLeft[ID])
+		if (!left && strenghtLeft[ID])
 			return 0.0;
 		
 		var result = strenght[ID];
@@ -73,7 +66,6 @@ class InputManager {
 	}
 	
     function onKeyDown(inputKey : Key, inputChar : String) {
-		//if (inputChar == " ") forceStart = true;
 		if (inputChar == "s") {
 			startDown[0] = true;
 		}
@@ -81,77 +73,32 @@ class InputManager {
 			startDown[1] = true;
 		}
 		else if (inputChar == "q") {
-			rightSide[0] = false;
-			leftSide[0] = true;
-			currentLeft[0] = true;
-			strenght[0] = 0.0;
-			time[0] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(0, true);
 		}
 		else if (inputChar == "u") {
-			rightSide[1] = false;
-			leftSide[1] = true;
-			currentLeft[1] = true;
-			strenght[1] = 0.0;
-			time[1] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(1, true);
 		}
 		else if (inputChar == "e") {
-			rightSide[0] = true;
-			leftSide[0] = false;
-			currentLeft[0] = false;
-			strenght[0] = 0.0;
-			time[0] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(0, false);
 		}
 		else if (inputChar == "o") {
-			rightSide[1] = true;
-			leftSide[1] = false;
-			currentLeft[1] = false;
-			strenght[1] = 0.0;
-			time[1] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(1, false);
 		}
 		else if (inputChar == "a") {
-			if (leftSide[0]) {
-				strenght[0] = getCharge(0);
-				leftSide[0] = false;
-				strenghtLeft[0] = true;
-				time[0] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(0, true);
 		}
 		else if (inputChar == "j") {
-			if (leftSide[1]) {
-				strenght[1] = getCharge(1);
-				leftSide[1] = false;
-				strenghtLeft[1] = true;
-				time[1] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(1, true);
 		}
 		else if (inputChar == "d") {
-			if (rightSide[0]) {
-				strenght[0] = getCharge(0);
-				rightSide[0] = false;
-				strenghtLeft[0] = false;
-				time[0] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(0, false);
 		}
 		else if (inputChar == "l") {
-			if (rightSide[1]) {
-				strenght[1] = getCharge(1);
-				rightSide[1] = false;
-				strenghtLeft[1] = false;
-				time[1] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(1, false);
 		}
     }
 
     function onKeyUp(inputKey : Key, inputChar : String) {
-		if (inputChar == " ") forceStart = false;
 		if (inputChar == "s") {
 			startDown[0] = false;
 		}
@@ -168,51 +115,39 @@ class InputManager {
 		if (button == 0) {
 			startDown[padID] = value > 0.75;
 		}
-		/*else if (button == 3) {
-			var down = value > 0.75;
-			if (invertedDown[padID] && !down) {
-				invertedDown[padID] = false;
-			}
-			else if (!invertedDown[padID] && down) {
-				invertedDown[padID] = true;
-				inverted[padID] = !inverted[padID];
-			}
-		}*/
 		else if (button == 4 && value > TRIGGER_THRESHOLD) {
-			rightSide[padID] = false;
-			leftSide[padID] = true;
-			currentLeft[padID] = true;
-			strenght[padID] = 0.0;
-			time[padID] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(padID, true);
 		}
 		else if (button == 5 && value > TRIGGER_THRESHOLD) {
-			rightSide[padID] = true;
-			leftSide[padID] = false;
-			currentLeft[padID] = false;
-			strenght[padID] = 0.0;
-			time[padID] = Scheduler.time();
-			kha.audio1.Audio.play(kha.Assets.sounds.insert);
+			onInsert(padID, false);
 		}
 		else if (button == 6 && value > TRIGGER_THRESHOLD) {
-			if (leftSide[padID]) {
-				strenght[padID] = getCharge(padID);
-				leftSide[padID] = false;
-				strenghtLeft[padID] = true;
-				time[padID] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(padID, true);
 		}
 		else if (button == 7 && value > TRIGGER_THRESHOLD) {
-			if (rightSide[padID]) {
-				strenght[padID] = getCharge(padID);
-				rightSide[padID] = false;
-				strenghtLeft[padID] = false;
-				time[padID] = Math.NEGATIVE_INFINITY;
-				kha.audio1.Audio.play(kha.Assets.sounds.pull);
-			}
+			onPush(padID, false);
 		}
 		//trace("[button_" + padID + "] " + button + ": " + value);
+	}
+	
+	private function onInsert(ID: Int, left: Bool) {
+		rightSide[ID] = !left;
+		leftSide[ID] = left;
+		currentLeft[ID] = left;
+		strenght[ID] = 0.0;
+		time[ID] = Scheduler.time();
+		kha.audio1.Audio.play(kha.Assets.sounds.insert);
+	}
+	
+	private function onPush(ID: Int, left: Bool) {
+		if (rightSide[ID] && !left || leftSide[ID] && left) {
+			strenght[ID] = getCharge(ID);
+			leftSide[ID] = false;
+			rightSide[ID] = false;
+			strenghtLeft[ID] = left;
+			time[ID] = Math.NEGATIVE_INFINITY;
+			kha.audio1.Audio.play(kha.Assets.sounds.pull);
+		}
 	}
 	
 	private inline function clamp(value: Float, min: Float, max: Float) {

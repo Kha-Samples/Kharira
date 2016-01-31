@@ -52,10 +52,6 @@ class KhajakTest {
 		Renderer.the.light1.position = new FastVector3(5, 500, 5);
 		Renderer.the.light1.power = 150000;
 		Renderer.the.light1.color = Color.White;
-			
-		/*var emitter = new Emitter(new FastVector3(0, -1, 2), 0.1, 0.1, new FastVector3(0, 1, 0), 0.125 * Math.PI, 0, 1, 1.5, new FastVector2(0.15, 0.15), new FastVector2(0.25, 0.25), 0, 2 * Math.PI, 0, 2 * Math.PI, 1, 1, 1, 1, Color.Magenta, Color.Magenta, Color.Green, Color.Green, 0.005, 0.005, 500, Assets.images.smoke);
-		emitter.start(Math.POSITIVE_INFINITY);
-		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
 		var colors = [kha.Color.fromBytes(238, 154, 73), kha.Color.fromBytes(139, 90, 43)];
@@ -111,11 +107,11 @@ class KhajakTest {
 				
 				if (left > 0) {
 					boats[player].addImpulse(left, true);
-					trace("[player " + player + "] left = " + left);
+					//trace("[player " + player + "] left = " + left);
 				}
 				if (right > 0) {
 					boats[player].addImpulse(right, false);
-					trace("[player " + player + "] right = " + right);
+					//trace("[player " + player + "] right = " + right);
 				}
 			}
 		}
@@ -129,7 +125,7 @@ class KhajakTest {
 					message[player * 2 + 1] = "";
 				}
 			}
-			gameRunning = ready || InputManager.the.forceStart;
+			gameRunning = ready;
 			if (gameRunning) {
 				Scheduler.addTimeTask(displayText.bind(
 					["Lower your paddle with a shoulder button",
