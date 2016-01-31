@@ -3,6 +3,7 @@
 uniform sampler2D tex;
 uniform mat4 matrix;
 uniform float time;
+uniform float zoffset;
 
 attribute vec2 pos;
 
@@ -10,7 +11,7 @@ varying mediump vec4 color;
 
 const int ITER_GEOMETRY = 3;
 const float SEA_CHOPPY = 4.0;
-const float SEA_SPEED = 0.8;
+const float SEA_SPEED = 0.8 * 5.0;
 const float SEA_FREQ = 0.16;
 const float SEA_HEIGHT = 0.6;
 mat2 octave_m = mat2(1.6,1.2,-1.2,1.6);
@@ -31,7 +32,7 @@ float noise( in vec2 p ) {
 }
 
 float sea_octave(vec2 uv, float choppy) {
-    uv += noise(uv);        
+    uv += noise(uv);
     vec2 wv = 1.0-abs(sin(uv));
     vec2 swv = abs(cos(uv));    
     wv = mix(wv,swv,wv);
@@ -72,8 +73,9 @@ float map(vec2 uv) {
 }
 
 void main() {
+	vec2 newpos = vec2(pos.x, pos.y + zoffset);
 	//vec4 coord = texture2D(tex, pos);
-	float height = map(pos); //sin(pos.x + time) * sin(pos.x + time * 1.1) + sin(pos.y + time * 1.1) * sin(pos.y + time * 1.2);
-	gl_Position = matrix * vec4(pos.x, height /*coord.r*/, pos.y, 1.0);
+	float height = map(newpos); //sin(pos.x + time) * sin(pos.x + time * 1.1) + sin(pos.y + time * 1.1) * sin(pos.y + time * 1.2);
+	gl_Position = matrix * vec4(newpos.x, height /*coord.r*/, newpos.y, 1.0);
 	color = vec4(height / 2.0, height / 2.0, 1.0 + height / 2.0 /*coord.r*/, 0.0);
 }

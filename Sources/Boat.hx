@@ -3,6 +3,7 @@ package;
 import kha.Color;
 import kha.math.Matrix4;
 import kha.math.FastMatrix4;
+import kha.math.Vector2;
 import kha.math.Vector3;
 import kha.math.Vector4;
 import khajak.RenderObject;
@@ -23,7 +24,7 @@ class Boat extends RenderObject {
 	private var rotationStrength: Float;
 	private var startingPosition: Vector4;
 	private var paddle: Paddle;
-		
+	
 	public function new(position: Vector4, color: Color, paddle: Paddle) {
 		super(Meshes.Boat, color, kha.Assets.images.black);
 		
@@ -49,6 +50,7 @@ class Boat extends RenderObject {
 	}
 	
 	public function update(deltaTime: Float, paddleLeft: Bool, paddleRot: Float) {
+		position.y = Water.map(new Vector2(position.x, position.z));
 		var trackCenter = TrackGenerator.the.getY(position.z);
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();
