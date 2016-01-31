@@ -21,6 +21,7 @@ class KhajakTest {
 	var lastTime: Float;
 	
 	var boats: Array<Boat>;
+	var stones: Array<Stone>;
 	var water: Water;
 	
 	var gameRunning: Bool;
@@ -68,12 +69,15 @@ class KhajakTest {
 		var x: Float;
 		var y: Float;
 		var iMax = Std.int(TRACK_LENGHT / 5);
+		stones = new Array<Stone>();
 		for (i in 0...iMax) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
-			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 1, x)));
-			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 1, x)));
+			stones.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 1, x)));
+			stones.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 1, x)));
 		}
+		
+		for (stone in stones) Renderer.the.objects.push(stone);
 		
 		reset();
 		
@@ -172,6 +176,8 @@ class KhajakTest {
 
 	function render(framebuffer: Framebuffer): Void {
 		if (!initialized) return;
+		
+		for (stone in stones) stone.update();
 		
 		var distances = new Array<Float>();
 		for (player in 0...2) {
