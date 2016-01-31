@@ -26,7 +26,7 @@ class Boat extends RenderObject {
 	private var paddle: Paddle;
 	
 	public function new(position: Vector4, color: Color, paddle: Paddle) {
-		super(Meshes.Boat, color, kha.Assets.images.black);
+		super(Meshes.Boat, color, kha.Assets.images.black, true);
 		
 		this.paddle = paddle;
 		

@@ -31,7 +31,7 @@ class Water {
 	static inline var ydiv: Int = 250;
 
 	public function new() {
-		new waves.Wavelet();
+		//new waves.Wavelet();
 		
 		vertexMap = Image.create(1024, 1024, TextureFormat.L8);
 		var pixels = vertexMap.lock();
@@ -48,6 +48,13 @@ class Water {
 		pipeline.fragmentShader = Shaders.water_frag;
 		pipeline.depthWrite = true;
 		pipeline.depthMode = CompareMode.Less;
+		pipeline.stencilMode = kha.graphics4.CompareMode.Equal;
+		pipeline.stencilWriteMask = 0x00;
+		pipeline.stencilReadMask = 0xff;
+		pipeline.stencilReferenceValue = 0;
+		pipeline.stencilBothPass = kha.graphics4.StencilAction.Keep;
+		pipeline.stencilFail = kha.graphics4.StencilAction.Keep;
+		pipeline.stencilDepthFail = kha.graphics4.StencilAction.Keep;
 		pipeline.compile();
 		
 		vertexMapLocation = pipeline.getTextureUnit("tex");
