@@ -16,7 +16,7 @@ import khajak.Renderer;
 import khajak.RenderObject;
 
 class KhajakTest {
-	public static var TRACK_LENGHT = 150;
+	public static var TRACK_LENGHT = 250;
 	
 	var lastTime: Float;
 	
@@ -44,7 +44,7 @@ class KhajakTest {
 	function loadFinished() {
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		InputManager.init(new InputManager());		
-		TrackGenerator.init(new TrackGenerator(42, 1, 5, 50, 75, 7));
+		TrackGenerator.init(new TrackGenerator(42, 3, 8, 50, 75, 7));
 		
 		Renderer.the.light1.position = new FastVector3(5, 500, 5);
 		Renderer.the.light1.power = 150000;
@@ -55,9 +55,12 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(2, 1.2, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 1.2, 0), kha.Color.fromBytes(139, 90, 43))];
-		for (boat in boats) {
-			Renderer.the.objects.push(boat);
+		var colors = [kha.Color.fromBytes(238, 154, 73), kha.Color.fromBytes(139, 90, 43)];
+		var paddles = [new Paddle(colors[0]), new Paddle(colors[1])];
+		boats = [new Boat(new Vector4(2, 1.2, 0), colors[0], paddles[0]), new Boat(new Vector4(-2, 1.2, 0), colors[1], paddles[1])];
+		for (i in 0...2) {
+			Renderer.the.objects.push(paddles[i]);
+			Renderer.the.objects.push(boats[i]);
 		}
 		
 		var x: Float;
@@ -93,7 +96,7 @@ class KhajakTest {
 		var deltaTime = Scheduler.time() - lastTime;
 		lastTime = Scheduler.time();
 		
-		if (gameRunning) {
+		if (gameRunning && !gameStopped) {
 			var left: Float;
 			var right: Float;
 			for (player in 0...2) {
@@ -110,7 +113,7 @@ class KhajakTest {
 				}
 			}
 		}
-		else {
+		else if (!gameRunning) {
 			var ready = true;
 			for (player in 0...2) {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
@@ -124,8 +127,8 @@ class KhajakTest {
 			}
 		}
 		
-		for (boat in boats) {
-			boat.update(deltaTime);
+		for (i in 0...2) {
+			boats[i].update(deltaTime, InputManager.the.currentLeft[i] && (gameRunning && !gameStopped), (gameRunning && !gameStopped) ? InputManager.the.getCharge(i) : 0);
 		}
 		
 		for (player in 0...2) {
@@ -201,16 +204,16 @@ class KhajakTest {
 			}
 		}
 		
-		if (!gameRunning) {
+		if (!gameRunning || gameStopped) {
 			fontSize = 12;
 			g2.fontSize = fontSize;
 			
 			s = "A Global Game Jam 2016 game";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 4.5);
 			s = "by Robert Konrad and Christian Reuter";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 1.5);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 3);
 			s = "made with Kha (http://kode.tech)";
-			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 3);
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 - font.height(fontSize) * 1.5);
 			
 			fontSize = 48;
 			g2.fontSize = fontSize;
@@ -218,6 +221,8 @@ class KhajakTest {
 			s = "Khajak";
 			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (System.pixelHeight / 3 - font.height(fontSize)) / 2);
 		}
+		
+		g2.drawImage(Assets.images.controller, (System.pixelWidth - 600) / 2, System.pixelHeight - 90);
 		
 		g2.end();
 	}

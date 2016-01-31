@@ -24,6 +24,16 @@ class Meshes extends khajak.Meshes {
 		return boat;
 	}
 	
+	static var paddle: Mesh;
+	public static var Paddle(get, null): Mesh;
+	static function get_Paddle() {
+		if (paddle == null) {
+			paddle = Mesh.FromModel(kha.Assets.blobs.paddle_obj.toString());
+		}
+		
+		return paddle;
+	}
+	
 	static var stone: Mesh;
 	public static var Stone(get, null): Mesh;
 	static function get_Stone() {
