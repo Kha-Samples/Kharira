@@ -25,7 +25,7 @@ class Boat extends RenderObject {
 	private var startingPosition: Vector4;
 	
 	public function new(position: Vector4, color: Color) {
-		super(Meshes.Boat, color, kha.Assets.images.black);
+		super(Meshes.Boat, color, kha.Assets.images.black, true);
 		
 		startingPosition = position;
 		resetAll();

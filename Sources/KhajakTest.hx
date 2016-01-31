@@ -148,8 +148,8 @@ class KhajakTest {
 		for (player in 0...2) {
 			Renderer.the.updateCamera(new FastVector3(boats[player].position.x, 20, boats[player].position.z - 20), new FastVector3(boats[player].position.x, 0, boats[player].position.z + 10));
 			Renderer.the.beginRender(framebuffer, player);
-			water.render(framebuffer, Renderer.the.calculateMV(), boats[player].position.z);
 			Renderer.the.render(framebuffer, player);
+			water.render(framebuffer, Renderer.the.calculateMV(), boats[player].position.z);
 			Renderer.the.endRender(framebuffer, player);
 		
 			distances[player] = boats[player].position.z - boats[1 - player].position.z;
