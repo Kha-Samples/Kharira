@@ -73,7 +73,7 @@ class InputManager {
 	}
 	
     function onKeyDown(inputKey : Key, inputChar : String) {
-		if (inputChar == " ") forceStart = true;
+		//if (inputChar == " ") forceStart = true;
 		if (inputChar == "s") {
 			startDown[0] = true;
 		}
