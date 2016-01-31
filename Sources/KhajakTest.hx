@@ -43,6 +43,8 @@ class KhajakTest {
 	}
 	
 	function loadFinished() {
+		kha.audio1.Audio.play(Assets.sounds.waves, true);
+		
 		kha.math.Random.init(Std.int(Scheduler.realTime() * 1000000));
 		InputManager.init(new InputManager());		
 		TrackGenerator.init(new TrackGenerator(42, 3, 8, 50, 75, 7));
