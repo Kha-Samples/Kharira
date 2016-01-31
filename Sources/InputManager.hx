@@ -13,11 +13,13 @@ class InputManager {
 	private var leftSide: Array<Bool>;
 	private var rightSide: Array<Bool>;
 	
-	private var strenghtLeft: Array<Bool>;
+	public var strenghtLeft: Array<Bool>;
 	private var strenght: Array<Float>;
 	private var inverted: Array<Bool>;
 	private var invertedDown: Array<Bool>;
 	private var startDown: Array<Bool>;
+	
+	public var currentLeft(default, null): Array<Bool>;
 	
 	private var time: Array<Float>;
 	
@@ -30,8 +32,9 @@ class InputManager {
 		inverted = [false, false];
 		invertedDown = [false, false];
 		startDown = [false, false];
+		currentLeft = [false, false];
 		strenght = [0.0, 0.0];
-		time = [0.0, 0.0];
+		time = [Math.NEGATIVE_INFINITY, Math.NEGATIVE_INFINITY];
 		forceStart = false;
 		
 		for (i in 0...2) {
@@ -45,6 +48,10 @@ class InputManager {
 	
 	public function getStart(ID: Int): Bool {
 		return startDown[ID];
+	}
+	
+	public function getCharge(ID: Int): Float {
+		return Math.max(1 - Math.abs(TARGET_DELAY - (Scheduler.time() - time[ID])), 0);
 	}
 	
 	public function getStrength(ID: Int, left: Bool): Float {
@@ -91,30 +98,34 @@ class InputManager {
 				inverted[padID] = !inverted[padID];
 			}
 		}
-		else if (button == 4) {
+		else if (button == 4 && value > TRIGGER_THRESHOLD) {
 			rightSide[padID] = false;
 			leftSide[padID] = true;
+			currentLeft[padID] = true;
 			strenght[padID] = 0.0;
 			time[padID] = Scheduler.time();
 		}
-		else if (button == 5) {
+		else if (button == 5 && value > TRIGGER_THRESHOLD) {
 			rightSide[padID] = true;
 			leftSide[padID] = false;
+			currentLeft[padID] = false;
 			strenght[padID] = 0.0;
 			time[padID] = Scheduler.time();
 		}
 		else if (button == 6 && value > TRIGGER_THRESHOLD) {
 			if (leftSide[padID]) {
-				strenght[padID] = Math.max(1 - Math.abs(TARGET_DELAY - (Scheduler.time() - time[padID])), 0);
+				strenght[padID] = getCharge(padID);
 				leftSide[padID] = false;
 				strenghtLeft[padID] = true;
+				time[padID] = Math.NEGATIVE_INFINITY;
 			}
 		}
 		else if (button == 7 && value > TRIGGER_THRESHOLD) {
 			if (rightSide[padID]) {
-				strenght[padID] = Math.max(1 - Math.abs(TARGET_DELAY - (Scheduler.time() - time[padID])), 0);
+				strenght[padID] = getCharge(padID);
 				rightSide[padID] = false;
 				strenghtLeft[padID] = false;
+				time[padID] = Math.NEGATIVE_INFINITY;
 			}
 		}
 		//trace("[button_" + padID + "] " + button + ": " + value);

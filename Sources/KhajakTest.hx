@@ -55,9 +55,12 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(2, 1.2, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 1.2, 0), kha.Color.fromBytes(139, 90, 43))];
-		for (boat in boats) {
-			Renderer.the.objects.push(boat);
+		var colors = [kha.Color.fromBytes(238, 154, 73), kha.Color.fromBytes(139, 90, 43)];
+		var paddles = [new Paddle(colors[0]), new Paddle(colors[1])];
+		boats = [new Boat(new Vector4(2, 1.2, 0), colors[0], paddles[0]), new Boat(new Vector4(-2, 1.2, 0), colors[1], paddles[1])];
+		for (i in 0...2) {
+			Renderer.the.objects.push(paddles[i]);
+			Renderer.the.objects.push(boats[i]);
 		}
 		
 		var x: Float;
@@ -124,8 +127,8 @@ class KhajakTest {
 			}
 		}
 		
-		for (boat in boats) {
-			boat.update(deltaTime);
+		for (i in 0...2) {
+			boats[i].update(deltaTime, InputManager.the.currentLeft[i], InputManager.the.getCharge(i));
 		}
 		
 		for (player in 0...2) {
