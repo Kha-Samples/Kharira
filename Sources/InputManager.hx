@@ -44,7 +44,8 @@ class InputManager {
 	}
 	
 	public function getCharge(ID: Int): Float {
-		return Math.max(1 - Math.abs(TARGET_DELAY - (Scheduler.time() - time[ID])), 0);
+		var linear = Math.max(1 - Math.abs(TARGET_DELAY - (Scheduler.time() - time[ID])), 0);
+		return linear * linear;
 	}
 	
 	public function getStrength(ID: Int, left: Bool): Float {
