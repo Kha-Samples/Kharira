@@ -55,6 +55,7 @@ class Boat extends RenderObject {
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();
 			position = new Vector4(trackCenter, position.y, position.z - 5);
+			kha.audio1.Audio.play(kha.Assets.sounds.explosion_medium_wood_debris);
 		}
 		else {
 			impulse.length = Math.max(impulse.length * (1 - IMPULSE_DAMPING * deltaTime), 0);
