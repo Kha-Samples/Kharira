@@ -159,6 +159,11 @@ class KhajakTest {
 		
 		g2.begin(false);
 		
+		g2.color = Color.fromFloats(0.5, 0.5, 0.5);
+		
+		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
+		
+		
 		g2.color = Color.White;
 		/*var nextY = 0.0;
 		var lastY = TrackGenerator.the.getY(0) + System.pixelHeight / 2;
@@ -181,8 +186,6 @@ class KhajakTest {
 		var s = Math.round(distances[1]) + " m";
 		g2.drawString(s, System.pixelWidth - padding - font.width(fontSize, s), padding);
 		
-		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
-		
 		if (!gameRunning) {
 			for (player in 0...2) {
 				if (!playerReady[player]) {
@@ -196,6 +199,24 @@ class KhajakTest {
 			for (player in 0...2) {
 				g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
 			}
+		}
+		
+		if (!gameRunning) {
+			fontSize = 12;
+			g2.fontSize = fontSize;
+			
+			s = "A Global Game Jam 2016 game";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2);
+			s = "by Robert Konrad and Christian Reuter";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 1.5);
+			s = "made with Kha (http://kode.tech)";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 3);
+			
+			fontSize = 48;
+			g2.fontSize = fontSize;
+			
+			s = "Khajak";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (System.pixelHeight / 3 - font.height(fontSize)) / 2);
 		}
 		
 		g2.end();
