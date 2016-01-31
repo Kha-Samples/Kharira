@@ -55,7 +55,7 @@ class KhajakTest {
 		Renderer.the.particleEmitters.push(emitter);*/
 		
 		water = new Water();
-		boats = [new Boat(new Vector4(2, 0.1, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 0.1, 0), kha.Color.fromBytes(139, 90, 43))];
+		boats = [new Boat(new Vector4(2, 1.2, 0), kha.Color.fromBytes(238, 154, 73)), new Boat(new Vector4(-2, 1.2, 0), kha.Color.fromBytes(139, 90, 43))];
 		for (boat in boats) {
 			Renderer.the.objects.push(boat);
 		}
@@ -66,8 +66,8 @@ class KhajakTest {
 		for (i in 0...iMax) {
 			x = i * 5;
 			y = TrackGenerator.the.getY(x);
-			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 0, x)));
-			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 0, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y - (TrackGenerator.the.width + 2.0), 1, x)));
+			Renderer.the.objects.push(new Stone(new Vector4(y + (TrackGenerator.the.width + 2.0), 1, x)));
 		}
 		
 		reset();
@@ -116,7 +116,7 @@ class KhajakTest {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
 				ready = ready && playerReady[player];
 			}
-			gameRunning = ready;
+			gameRunning = ready || InputManager.the.forceStart;
 			if (gameRunning) {
 				Scheduler.addTimeTask(displayText.bind("Lower your paddle with a shoulder button").bind(3), 1);
 				Scheduler.addTimeTask(displayText.bind("Pull back using a trigger").bind(3), 5);
@@ -131,7 +131,7 @@ class KhajakTest {
 		for (player in 0...2) {
 			if (!gameStopped && !playerWon[1 - player] && boats[player].position.z >= (TRACK_LENGHT - 5)) {
 				playerWon[player] = true;
-				displayText("Player " + (player + 1) + " won!", 10);
+				displayText("Player " + ((1 - player) + 1) + " will be sacrificed at the ritual!", 10);
 				Scheduler.addTimeTask(reset, 11);
 				gameStopped = true;
 			}
@@ -159,6 +159,11 @@ class KhajakTest {
 		
 		g2.begin(false);
 		
+		g2.color = Color.fromFloats(0.5, 0.5, 0.5);
+		
+		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
+		
+		
 		g2.color = Color.White;
 		/*var nextY = 0.0;
 		var lastY = TrackGenerator.the.getY(0) + System.pixelHeight / 2;
@@ -181,8 +186,6 @@ class KhajakTest {
 		var s = Math.round(distances[1]) + " m";
 		g2.drawString(s, System.pixelWidth - padding - font.width(fontSize, s), padding);
 		
-		g2.fillRect(Std.int(System.pixelWidth / 2) - 2, 0, 4, System.pixelHeight);
-		
 		if (!gameRunning) {
 			for (player in 0...2) {
 				if (!playerReady[player]) {
@@ -196,6 +199,24 @@ class KhajakTest {
 			for (player in 0...2) {
 				g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
 			}
+		}
+		
+		if (!gameRunning) {
+			fontSize = 12;
+			g2.fontSize = fontSize;
+			
+			s = "A Global Game Jam 2016 game";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2);
+			s = "by Robert Konrad and Christian Reuter";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 1.5);
+			s = "made with Kha (http://kode.tech)";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (3 * System.pixelHeight / 2 - font.height(fontSize)) / 2 + font.height(fontSize) * 3);
+			
+			fontSize = 48;
+			g2.fontSize = fontSize;
+			
+			s = "Khajak";
+			g2.drawString(s, (System.pixelWidth - font.width(fontSize, s)) / 2, (System.pixelHeight / 3 - font.height(fontSize)) / 2);
 		}
 		
 		g2.end();

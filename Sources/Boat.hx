@@ -41,7 +41,7 @@ class Boat extends RenderObject {
 	
 	public function addImpulse(strenght: Float, left: Bool) {
 		rotationStrength = strenght;
-		rotationDir = (left ? -1 : 1) * rotationStrength;
+		rotationDir = (left ? 1 : -1) * rotationStrength;
 		direction = Matrix4.rotationY(angle).multvec(new Vector4(0, 0, 1));
 		impulse = impulse.add(direction.mult(strenght));
 	}
