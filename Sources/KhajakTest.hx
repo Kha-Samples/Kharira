@@ -27,7 +27,7 @@ class KhajakTest {
 	var gameStopped: Bool;
 	var playerReady: Array<Bool>;
 	var playerWon: Array<Bool>;
-	var message: String;
+	var message: Array<String>;
 	
 	var initialized: Bool;
 	
@@ -84,7 +84,7 @@ class KhajakTest {
 		gameStopped = false;
 		playerReady = [false, false];
 		playerWon = [false, false];
-		message = "";
+		message = ["Press the A button to ready up", "or s on the keyboard", "Press the A button to ready up", "or k on the keyboard"];
 		for (player in 0...2) {
 			boats[player].resetAll();
 		}
@@ -118,12 +118,31 @@ class KhajakTest {
 			for (player in 0...2) {
 				playerReady[player] = playerReady[player] || InputManager.the.getStart(player);
 				ready = ready && playerReady[player];
+				if (ready) {
+					message[player * 2 + 0] = "";
+					message[player * 2 + 1] = "";
+				}
 			}
 			gameRunning = ready || InputManager.the.forceStart;
 			if (gameRunning) {
-				Scheduler.addTimeTask(displayText.bind("Lower your paddle with a shoulder button").bind(3), 1);
-				Scheduler.addTimeTask(displayText.bind("Pull back using a trigger").bind(3), 5);
-				Scheduler.addTimeTask(displayText.bind("Experiment with the delay between your inputs").bind(3), 9);
+				Scheduler.addTimeTask(displayText.bind(
+					["Lower your paddle with a shoulder button",
+					"or with q / e on the keyboard",
+					"Lower your paddle with a shoulder button",
+					"or with u / o on the keyboard"]
+					).bind(3), 1);
+				Scheduler.addTimeTask(displayText.bind(
+					["Pull back using a trigger",
+					"or with a / d on the keyboard",
+					"Pull back using a trigger",
+					"or with j / l on the keyboard"]
+					).bind(3), 5);
+				Scheduler.addTimeTask(displayText.bind(
+					["Experiment with the delay",
+					"between those actions",
+					"Experiment with the delay",
+					"between those actions"]
+					).bind(3), 9);
 			}
 		}
 		
@@ -134,7 +153,12 @@ class KhajakTest {
 		for (player in 0...2) {
 			if (!gameStopped && !playerWon[1 - player] && boats[player].position.z >= (TRACK_LENGHT - 5)) {
 				playerWon[player] = true;
-				displayText("Player " + ((1 - player) + 1) + " will be sacrificed at the ritual!", 10);
+				displayText(
+					[player == 0 ? "You won!" : "You lost...",
+					player == 0 ? "The other one is sacrificed at the ritual." : "Hope you like being part of the ritual.",
+					player == 1 ? "You won!" : "You lost...",
+					player == 1 ? "The other one is sacrificed at the ritual." : "Hope you like being part of the ritual."]
+					, 10);
 				Scheduler.addTimeTask(reset, 11);
 				gameStopped = true;
 			}
@@ -189,18 +213,10 @@ class KhajakTest {
 		var s = Math.round(distances[1]) + " m";
 		g2.drawString(s, System.pixelWidth - padding - font.width(fontSize, s), padding);
 		
-		if (!gameRunning) {
-			for (player in 0...2) {
-				if (!playerReady[player]) {
-					s = "Press A to ready up";
-					g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
-				}
-			}
-		}
-		else if (message != "") {
-			s = message;
-			for (player in 0...2) {
-				g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2);
+		for (player in 0...2) {
+			for (i in 0...2) {
+				s = message[player * 2 + i];
+				g2.drawString(s, player * System.pixelWidth / 2 + System.pixelWidth / 4 - font.width(fontSize, s) / 2, (System.pixelHeight - font.height(fontSize)) / 2 - (1 - i) * font.height(fontSize) * 1.5);
 			}
 		}
 		
@@ -227,8 +243,8 @@ class KhajakTest {
 		g2.end();
 	}
 	
-	private function displayText(text: String, seconds: Float) {
+	private function displayText(text: Array<String>, seconds: Float) {
 		message = text;
-		Scheduler.addTimeTask(function(){message = "";}, seconds);
+		Scheduler.addTimeTask(function(){message = ["", "", "", ""];}, seconds);
 	}
 }
