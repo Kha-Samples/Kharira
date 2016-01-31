@@ -50,7 +50,7 @@ class Boat extends RenderObject {
 	}
 	
 	public function update(deltaTime: Float, paddleLeft: Bool, paddleRot: Float) {
-		position.y = Water.map(new Vector2(position.x, position.z));
+		position.y = Water.map(new Vector2(position.x, position.z)) - 0.5;
 		var trackCenter = TrackGenerator.the.getY(position.z);
 		if (Math.abs(TrackGenerator.the.getY(position.z) - position.x) >= TrackGenerator.the.width) {
 			resetMovement();
