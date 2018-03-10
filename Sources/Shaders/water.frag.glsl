@@ -1,7 +1,8 @@
-#version 100
+#version 450
 
-varying mediump vec4 color;
+in vec4 color;
+out vec4 frag;
 
 void main() {
-	gl_FragColor = color;
+	frag = color;
 }

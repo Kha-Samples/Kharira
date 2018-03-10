@@ -1,13 +1,13 @@
-#version 100
+#version 450
 
 uniform sampler2D tex;
 uniform mat4 matrix;
 uniform float time;
 uniform float zoffset;
 
-attribute vec2 pos;
+in vec2 pos;
 
-varying mediump vec4 color;
+out mediump vec4 color;
 
 const int ITER_GEOMETRY = 3;
 const float SEA_CHOPPY = 4.0;

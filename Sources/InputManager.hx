@@ -1,6 +1,6 @@
 package;
 
-import kha.Key;
+import kha.input.KeyCode;
 import kha.Scheduler;
 
 class InputManager {
@@ -66,45 +66,39 @@ class InputManager {
 		}
 	}
 	
-    function onKeyDown(inputKey : Key, inputChar : String) {
-		if (inputChar == "s") {
+    function onKeyDown(key: KeyCode) {
+		switch (key) {
+		case S:
 			startDown[0] = true;
-		}
-		if (inputChar == "k") {
+		case K:
 			startDown[1] = true;
-		}
-		else if (inputChar == "q") {
+		case Q:
 			onInsert(0, true);
-		}
-		else if (inputChar == "u") {
+		case U:
 			onInsert(1, true);
-		}
-		else if (inputChar == "e") {
+		case E:
 			onInsert(0, false);
-		}
-		else if (inputChar == "o") {
+		case O:
 			onInsert(1, false);
-		}
-		else if (inputChar == "a") {
+		case A:
 			onPush(0, true);
-		}
-		else if (inputChar == "j") {
+		case J:
 			onPush(1, true);
-		}
-		else if (inputChar == "d") {
+		case D:
 			onPush(0, false);
-		}
-		else if (inputChar == "l") {
+		case L:
 			onPush(1, false);
+		default:
 		}
     }
 
-    function onKeyUp(inputKey : Key, inputChar : String) {
-		if (inputChar == "s") {
+    function onKeyUp(key: KeyCode) {
+		switch (key) {
+		case S:
 			startDown[0] = false;
-		}
-		if (inputChar == "k") {
+		case K:
 			startDown[1] = false;
+		default:
 		}
     }
 	
